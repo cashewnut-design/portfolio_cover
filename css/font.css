@@ -1,0 +1,19 @@
+/* ============================================
+   愛悼 — Fonts CSS
+   Hahmlet · Zen Old Mincho → index.html preload
+   ============================================ */
+
+/* Paperlogy — Body B1~B3, caption */
+@import url("https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-3Light.css");
+@import url("https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-4Regular.css");
+
+/* NanumSonPyeonJiCe — 인터미션 (나눔손글씨 손편지체) */
+@font-face {
+  font-family: 'NanumSonPyeonJiCe';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src:
+    url('https://cdn.jsdelivr.net/gh/fonts-archive/NanumSonPyeonJiCe/NanumSonPyeonJiCe.woff2') format('woff2'),
+    url('https://cdn.jsdelivr.net/gh/fonts-archive/NanumSonPyeonJiCe/NanumSonPyeonJiCe.woff') format('woff');
+}

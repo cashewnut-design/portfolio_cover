@@ -1,0 +1,63 @@
+Reset · CSS
+/* ============================================
+   愛悼 — Reset CSS
+   ============================================ */
+ 
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+ 
+html {
+  font-size: 16px;
+  scroll-behavior: auto; /* Locomotive가 대신 처리 */
+  -webkit-text-size-adjust: 100%;
+}
+ 
+body {
+  min-height: 100vh;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+ 
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+ 
+input, button, textarea, select {
+  font: inherit;
+}
+ 
+p, h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
+}
+ 
+a {
+  text-decoration: none;
+  color: inherit;
+}
+ 
+ul, ol {
+  list-style: none;
+}
+ 
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+ 
+/* 스크롤바 숨김 */
+::-webkit-scrollbar {
+  display: none;
+}
+ 
+* {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+ 

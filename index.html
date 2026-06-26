@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="UX/UI 디자이너 포트폴리오 — 살아가기 위해 존재하는 것들에 대한 愛悼" />
+  <title>살아가기 위해 존재하는 것들에 대한 愛悼</title>
+
+  <!-- Critical: fonts + KV image preload -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="image" href="assets/images/kv-images.png" fetchpriority="high" />
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@200;400;500&family=Zen+Old+Mincho:wght@400;600;700&display=swap"
+  />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/reset.css" />
+  <link rel="stylesheet" href="css/font.css" />
+  <link rel="stylesheet" href="css/style.css" />
+
+  <!-- Locomotive Scroll v4 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css" />
+
+  <!-- Tailwind: below-fold 섹션용 — KV 렌더 차단 최소화 -->
+  <script defer src="https://cdn.tailwindcss.com"></script>
+  <script defer>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            bg:      '#1E100F',
+            kv:      '#74070D',
+            surface: '#30050E',
+            ink:     '#F6F3E4',
+            mute:    'rgba(246, 243, 228, 0.45)',
+          },
+          fontFamily: {
+            display: ['"Hahmlet"', 'serif'],
+            kanji:   ['"Zen Old Mincho"', 'serif'],
+            body:    ['"Paperlogy"', 'sans-serif'],
+          },
+          fontSize: {
+            h1: ['96px', { lineHeight: '1.1' }],
+            h2: ['60px', { lineHeight: '1.1' }],
+            h3: ['48px', { lineHeight: '1.2' }],
+            h4: ['35px', { lineHeight: '1.2' }],
+            h5: ['29px', { lineHeight: '1.2' }],
+          },
+          letterSpacing: { wide: '0.14em' },
+          lineHeight:    { display: '0.92', body: '1.8' },
+          maxWidth:      { content: '1440px' },
+          spacing: {
+            gutter:  'clamp(1.25rem, 5vw, 6rem)',
+            section: 'clamp(6rem, 14vh, 12rem)',
+          },
+        },
+      },
+    };
+  </script>
+</head>
+
+<body class="site-body">
+  <!-- =================== SCROLL CONTAINER =================== -->
+  <main data-scroll-container class="relative w-full">
+
+    <!-- =============== KV / HERO =============== -->
+    <section id="kv" class="section full-height" data-scroll-section>
+
+      <!-- 배경: primary red + grain -->
+      <div class="kv-bg" aria-hidden="true">
+        <div class="kv-bg__base"></div>
+        <div class="grain-overlay"></div>
+      </div>
+
+      <!-- 중앙 컴포지션: 1920×1024 아트보드 기준 -->
+      <div class="kv-stage">
+        <div class="kv-artboard anim-kv-artboard">
+          <p class="kv-portfolio t-kv-display anim-kv-portfolio" aria-label="PORTFOLIO">PORTFOLIO</p>
+          <div class="kv-flower-wrap">
+            <img
+              class="kv-flower anim-kv-flower"
+              src="assets/images/kv-images.png"
+              alt="국화"
+              width="1920"
+              height="1024"
+              fetchpriority="high"
+              decoding="async"
+            />
+          </div>
+          <p class="kv-kanji t-kv-kanji anim-kv-kanji" aria-hidden="true">愛悼</p>
+        </div>
+      </div>
+
+      <!-- UI 오버레이 (GNB · 하단 문구) -->
+      <header class="kv-header anim-kv-header">
+        <span class="kv-logo t-kanji-4">愛悼</span>
+        <nav class="kv-nav t-kanji-4" aria-label="Primary">
+          <span class="nav-link" data-scroll="#about">ABOUT</span>
+          <span class="nav-muted t-muted45">existing,</span>
+          <span class="nav-link" data-scroll="#work">WORK</span>
+          <span class="nav-muted t-muted45">as</span>
+          <span class="nav-muted t-muted45">enduring,</span>
+          <span class="nav-link" data-scroll="#contact">CONNECTION</span>
+          <span class="nav-muted t-muted45">as</span>
+          <span class="nav-muted t-muted45">still</span>
+          <span class="nav-muted t-muted45">here.</span>
+        </nav>
+      </header>
+
+      <!-- 좌측 하단 -->
+      <div class="kv-bottom-left anim-kv-bottom-left">
+        <h5 class="t-h5 kv-subtitle-kr">살아가기 위해 존재하는 것들에 대한</h5>
+        <p class="t-kanji-5 kv-subtitle-en">About exiting for living</p>
+      </div>
+
+      <!-- 우측 하단 -->
+      <div class="kv-bottom-right anim-kv-bottom-right">
+        <p class="t-kanji-5 kv-presented-by">Presented by</p>
+        <p class="kv-name t-kanji-4">Taeyeon Kim</p>
+      </div>
+
+    </section>
+
+    <!-- =============== INTERMISSION =============== -->
+    <section class="section intermission" data-scroll-section>
+      <div class="intermission__inner">
+        <p class="t-intermission">"피었다 지는 그 사이, 아직도."</p>
+      </div>
+    </section>
+
+    <!-- =============== ABOUT =============== -->
+    <section id="about" class="section about" data-scroll-section>
+      <div class="container grid-12 about__grid">
+        <div class="about__left">
+          <h2 class="t-h2 anim-up">친애하는 당신에게,</h2>
+          <p class="t-b2 anim-fade">
+            삶이란 고통 속에서 피어나는 꽃과 같으며 언젠가는 지지만,<br>
+            그저 존재하기만 해도 충분하다. 사랑을 담아, 그런 이들을 위한
+          </p>
+        </div>
+
+        <div class="about__divider anim-fade" aria-hidden="true"></div>
+
+        <p class="about__kanji t-kanji-1 anim-up">愛悼</p>
+
+        <div class="about__sign-wrap anim-fade">
+          <p class="about__sign t-h5 t-muted">
+            Regardless,<br>Taeyeon
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- =============== PROFILE =============== -->
+    <section id="profile" class="section profile" data-scroll-section>
+
+      <header class="profile-header">
+        <span class="profile-header__logo">愛悼</span>
+        <nav class="profile-header__nav" aria-label="Primary">
+          <a class="profile-header__link" href="#about">ABOUT</a>
+          <span class="profile-header__muted">existing,</span>
+          <a class="profile-header__link" href="#work">WORK</a>
+          <span class="profile-header__muted">as enduring,</span>
+          <a class="profile-header__link" href="#contact">CONNECTION</a>
+          <span class="profile-header__muted">as still here.</span>
+        </nav>
+      </header>
+
+      <div class="container grid-12 profile__grid">
+
+        <!-- 좌측 컬럼 -->
+        <div class="profile__left">
+          <div class="profile__img-wrap profile-anim-img">
+            <img
+              class="profile__img"
+              src="assets/images/profile.webp"
+              alt="Taeyeon Kim 프로필"
+              width="480"
+              height="640"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+
+          <p class="profile__quote profile-anim-typo">
+            Look through the remains left behind
+          </p>
+
+          <div class="profile__kanji-deco">
+            <div class="profile__kanji-item profile-anim-typo">
+              <span class="profile__kanji-char">愛</span>
+              <div class="profile__kanji-meta">
+                <span class="profile__kanji-en">Love</span>
+                <span class="profile__kanji-rom">ài</span>
+              </div>
+            </div>
+            <div class="profile__kanji-item profile-anim-typo">
+              <span class="profile__kanji-char">悼</span>
+              <div class="profile__kanji-meta">
+                <span class="profile__kanji-en">Mourning</span>
+                <span class="profile__kanji-rom">dào</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 중앙 컬럼 -->
+        <div class="profile__center">
+          <div class="profile__block profile-anim-center">
+            <h3 class="profile__label">PROFILE</h3>
+            <p class="profile__body">
+              UX/UI 디자이너 김태연입니다. 사라짐과 남음 사이의 감각을 인터페이스로
+              번역하며, 조용한 긴장감과 여백을 통해 사용자가 잠시 멈추는 경험을 설계합니다.
+            </p>
+          </div>
+          <div class="profile__block profile-anim-center">
+            <h3 class="profile__label">EDUCATION</h3>
+            <p class="profile__body">
+              OO대학교 시각디자인과 졸업<br>
+              UI/UX 전공 심화 과정 수료
+            </p>
+          </div>
+          <div class="profile__block profile-anim-center">
+            <h3 class="profile__label">AWARDS / SELECTIONS</h3>
+            <p class="profile__body">
+              2025 — OO 디자인 어워드 본선 선정<br>
+              2024 — UX Writing 공모전 우수상
+            </p>
+          </div>
+          <div class="profile__block profile-anim-center">
+            <h3 class="profile__label">LANGUAGES</h3>
+            <p class="profile__body">
+              Korean — Native<br>
+              English — Professional Working Proficiency
+            </p>
+          </div>
+        </div>
+
+        <!-- 우측 컬럼 -->
+        <div class="profile__right">
+          <div class="profile__block profile-anim-right">
+            <h3 class="profile__label">CERTIFICATIONS</h3>
+            <p class="profile__body">
+              GTQ 1급 · Figma Advanced Certificate<br>
+              정보처리기능사
+            </p>
+          </div>
+          <div class="profile__block profile-anim-right">
+            <h3 class="profile__label">TOOLS</h3>
+            <p class="profile__body">
+              Figma · Adobe CC · Principle<br>
+              HTML/CSS · JavaScript · GSAP
+            </p>
+          </div>
+          <div class="profile__block profile-anim-right">
+            <h3 class="profile__label">WORKFLOW</h3>
+            <p class="profile__body">
+              Research → Wireframe → Prototype<br>
+              Usability Test → Handoff → Iteration
+            </p>
+          </div>
+          <div class="profile__block profile-anim-right">
+            <h3 class="profile__label">OUTPUT</h3>
+            <p class="profile__body">
+              Web · Mobile App · Editorial<br>
+              Brand Identity · Design System
+            </p>
+          </div>
+        </div>
+
+        <!-- 하단 유도 -->
+        <nav class="about-nav profile-anim-nav" aria-label="Next section">
+          <div class="about-nav-symbols" aria-hidden="true">
+            <span class="about-nav__sym about-nav__sym--1">菊</span>
+            <span class="about-nav__sym about-nav__sym--2">✦</span>
+            <span class="about-nav__sym about-nav__sym--3">✧</span>
+            <span class="about-nav__sym about-nav__sym--4">·</span>
+            <span class="about-nav__line"></span>
+          </div>
+          <a class="about-nav__link about-nav-text" href="#work">삶과 죽음이 닿는 자리에서</a>
+        </nav>
+
+      </div>
+    </section>
+
+    <!-- =============== WORK =============== -->
+    <section id="work" data-scroll-section
+             class="relative bg-surface px-gutter py-section">
+      <div class="mx-auto w-full max-w-content">
+        <div class="flex items-baseline justify-between gap-4 mb-[clamp(2.5rem,8vh,5rem)] border-b border-mute pb-5
+                    max-md:flex-col max-md:items-start">
+          <h2 class="t-h2" data-reveal>Selected Work</h2>
+          <p class="t-caption t-muted40" data-reveal>2023 — 2026</p>
+        </div>
+
+        <div class="swiper work__swiper w-full overflow-hidden" data-reveal>
+          <div class="swiper-wrapper">
+            <figure class="swiper-slide relative aspect-[4/5] bg-kv overflow-hidden">
+              <figcaption class="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-bg/90 to-transparent">
+                <p class="t-h4">Project 01</p>
+                <p class="t-caption t-muted40">Brand · Interaction</p>
+              </figcaption>
+            </figure>
+            <figure class="swiper-slide relative aspect-[4/5] bg-kv overflow-hidden">
+              <figcaption class="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-bg/90 to-transparent">
+                <p class="t-h4">Project 02</p>
+                <p class="t-caption t-muted40">Editorial · Web</p>
+              </figcaption>
+            </figure>
+            <figure class="swiper-slide relative aspect-[4/5] bg-kv overflow-hidden">
+              <figcaption class="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-bg/90 to-transparent">
+                <p class="t-h4">Project 03</p>
+                <p class="t-caption t-muted40">UX · System</p>
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =============== CONTACT =============== -->
+    <section id="contact" data-scroll-section
+             class="relative bg-bg min-h-[70vh] flex items-center px-gutter py-section">
+      <div class="mx-auto w-full max-w-content">
+        <p class="t-caption t-muted40" data-reveal>Contact</p>
+        <a href="mailto:hello@example.com" data-reveal
+           class="t-h1 inline-block mt-6 transition-opacity duration-500 hover:opacity-55">
+          hello@example.com
+        </a>
+        <nav class="mt-[clamp(2rem,6vh,4rem)] flex gap-8" data-reveal>
+          <a href="#" target="_blank" rel="noopener"
+             class="t-caption t-muted40 transition-colors duration-500 hover:text-ink">Instagram</a>
+          <a href="#" target="_blank" rel="noopener"
+             class="t-caption t-muted40 transition-colors duration-500 hover:text-ink">Behance</a>
+          <a href="#" target="_blank" rel="noopener"
+             class="t-caption t-muted40 transition-colors duration-500 hover:text-ink">LinkedIn</a>
+        </nav>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =================== SCRIPTS =================== -->
+  <!-- GSAP 3.x + ScrollTrigger -->
+  <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+
+  <!-- Locomotive Scroll v4 -->
+  <script defer src="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
+
+  <!-- App scripts -->
+  <script defer src="js/scroll.js"></script>
+  <script defer src="js/main.js"></script>
+</body>
+</html>
