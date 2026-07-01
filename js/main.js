@@ -190,6 +190,29 @@ function initRevealAnimations() {
   });
 }
 
+function initSiteGnb() {
+  const gnb = document.querySelector('.site-gnb');
+  const kv = document.querySelector('#kv');
+  const scroller = getScrollContainer();
+
+  if (!gnb || !kv || !scroller || !hasGsap()) return;
+
+  /* KV를 지나면(인터미션·About부터) KV와 동일한 위치에 고정 GNB 표시 */
+  ScrollTrigger.create({
+    trigger: kv,
+    scroller,
+    start: 'bottom top',
+    onEnter: () => {
+      gnb.classList.add('is-visible');
+      gnb.setAttribute('aria-hidden', 'false');
+    },
+    onLeaveBack: () => {
+      gnb.classList.remove('is-visible');
+      gnb.setAttribute('aria-hidden', 'true');
+    },
+  });
+}
+
 function initKvHeader() {
   const header = document.querySelector('.kv-header');
   if (!header || typeof window.locoScroll === 'undefined') return;
@@ -209,7 +232,7 @@ function initKvHeader() {
   });
 }
 
-function initKvNav() {
+function initSiteNav() {
   document.querySelectorAll('.nav-link[data-scroll]').forEach((link) => {
     link.addEventListener('click', () => {
       const target = link.dataset.scroll;
@@ -232,7 +255,7 @@ function bootMain() {
 
   gsap.registerPlugin(ScrollTrigger);
   initKvLoadAnimation();
-  initKvNav();
+  initSiteNav();
 }
 
 window.addEventListener('loco:ready', () => {
@@ -241,6 +264,7 @@ window.addEventListener('loco:ready', () => {
   setupSectionAnimations();
   initRevealAnimations();
   initKvHeader();
+  initSiteGnb();
 });
 
 window.addEventListener('load', () => {

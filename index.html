@@ -62,6 +62,23 @@
 </head>
 
 <body class="site-body">
+
+  <!-- 공통 GNB — KV 이후 top: 28px 고정 -->
+  <header class="site-gnb gnb" aria-label="Site navigation" aria-hidden="true">
+    <span class="gnb__logo t-kanji-4">愛悼</span>
+    <nav class="gnb__nav t-kanji-4" aria-label="Primary">
+      <span class="nav-link" data-scroll="#about">ABOUT</span>
+      <span class="nav-muted t-muted45">existing,</span>
+      <span class="nav-link" data-scroll="#work">WORK</span>
+      <span class="nav-muted t-muted45">as</span>
+      <span class="nav-muted t-muted45">enduring,</span>
+      <span class="nav-link" data-scroll="#contact">CONNECTION</span>
+      <span class="nav-muted t-muted45">as</span>
+      <span class="nav-muted t-muted45">still</span>
+      <span class="nav-muted t-muted45">here.</span>
+    </nav>
+  </header>
+
   <!-- =================== SCROLL CONTAINER =================== -->
   <main data-scroll-container class="relative w-full">
 
@@ -93,10 +110,10 @@
         </div>
       </div>
 
-      <!-- UI 오버레이 (GNB · 하단 문구) -->
-      <header class="kv-header anim-kv-header">
-        <span class="kv-logo t-kanji-4">愛悼</span>
-        <nav class="kv-nav t-kanji-4" aria-label="Primary">
+      <!-- UI 오버레이 (KV 전용 GNB · 하단 문구) -->
+      <header class="kv-header gnb anim-kv-header">
+        <span class="gnb__logo t-kanji-4">愛悼</span>
+        <nav class="gnb__nav t-kanji-4" aria-label="Primary">
           <span class="nav-link" data-scroll="#about">ABOUT</span>
           <span class="nav-muted t-muted45">existing,</span>
           <span class="nav-link" data-scroll="#work">WORK</span>
@@ -156,26 +173,14 @@
     <!-- =============== PROFILE =============== -->
     <section id="profile" class="section profile" data-scroll-section>
 
-      <header class="profile-header">
-        <span class="profile-header__logo">愛悼</span>
-        <nav class="profile-header__nav" aria-label="Primary">
-          <a class="profile-header__link" href="#about">ABOUT</a>
-          <span class="profile-header__muted">existing,</span>
-          <a class="profile-header__link" href="#work">WORK</a>
-          <span class="profile-header__muted">as enduring,</span>
-          <a class="profile-header__link" href="#contact">CONNECTION</a>
-          <span class="profile-header__muted">as still here.</span>
-        </nav>
-      </header>
-
       <div class="container grid-12 profile__grid">
 
-        <!-- 좌측 컬럼 -->
+        <!-- 좌측 (col 1–4) -->
         <div class="profile__left">
           <div class="profile__img-wrap profile-anim-img">
             <img
               class="profile__img"
-              src="assets/images/profile.webp"
+              src="assets/images/profile/profile.jpg"
               alt="Taeyeon Kim 프로필"
               width="480"
               height="640"
@@ -189,97 +194,93 @@
           </p>
 
           <div class="profile__kanji-deco">
-            <div class="profile__kanji-item profile-anim-typo">
+            <div class="profile__kanji-row profile-anim-typo">
               <span class="profile__kanji-char">愛</span>
               <div class="profile__kanji-meta">
                 <span class="profile__kanji-en">Love</span>
-                <span class="profile__kanji-rom">ài</span>
+                <span class="profile__kanji-pron">愛 · AI</span>
               </div>
             </div>
-            <div class="profile__kanji-item profile-anim-typo">
+            <div class="profile__kanji-row profile__kanji-row--second profile-anim-typo">
               <span class="profile__kanji-char">悼</span>
               <div class="profile__kanji-meta">
                 <span class="profile__kanji-en">Mourning</span>
-                <span class="profile__kanji-rom">dào</span>
+                <span class="profile__kanji-pron">悼 · DO</span>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- 중앙 컬럼 -->
+        <!-- 중앙 (col 5–8) -->
         <div class="profile__center">
           <div class="profile__block profile-anim-center">
             <h3 class="profile__label">PROFILE</h3>
             <p class="profile__body">
-              UX/UI 디자이너 김태연입니다. 사라짐과 남음 사이의 감각을 인터페이스로
-              번역하며, 조용한 긴장감과 여백을 통해 사용자가 잠시 멈추는 경험을 설계합니다.
+              김태연 Multidisciplinary Designer / BRANDING · VISUAL · UX/UI BASED IN SEOUL
             </p>
           </div>
           <div class="profile__block profile-anim-center">
             <h3 class="profile__label">EDUCATION</h3>
             <p class="profile__body">
-              OO대학교 시각디자인과 졸업<br>
-              UI/UX 전공 심화 과정 수료
+              2026 SEO 최적화 디지털 브랜딩 UI/UX 웹서비스 구현 COMPLETED<br>
+              2024 세명대학교 · 시각디자인학과 GRADUATED<br>
+              2018 인명여자고등학교 GRADUATE
             </p>
           </div>
           <div class="profile__block profile-anim-center">
             <h3 class="profile__label">AWARDS / SELECTIONS</h3>
             <p class="profile__body">
-              2025 — OO 디자인 어워드 본선 선정<br>
-              2024 — UX Writing 공모전 우수상
+              2023 Encouragement Award · 전통문양 이모티콘 공모전<br>
+              2023 Selected · Blue Awards (한국상품문화디자인학회)<br>
+              2021 Selected · 국제디자인트렌드대전
             </p>
           </div>
           <div class="profile__block profile-anim-center">
             <h3 class="profile__label">LANGUAGES</h3>
             <p class="profile__body">
-              Korean — Native<br>
-              English — Professional Working Proficiency
+              Korean — Native / Japanese — Studying toward JLPT N3 / English — Working proficiency
             </p>
           </div>
         </div>
 
-        <!-- 우측 컬럼 -->
+        <!-- 우측 (col 9–12) -->
         <div class="profile__right">
           <div class="profile__block profile-anim-right">
             <h3 class="profile__label">CERTIFICATIONS</h3>
             <p class="profile__body">
-              GTQ 1급 · Figma Advanced Certificate<br>
-              정보처리기능사
+              GTQ 1급 · GTQi 1급
             </p>
           </div>
           <div class="profile__block profile-anim-right">
             <h3 class="profile__label">TOOLS</h3>
             <p class="profile__body">
-              Figma · Adobe CC · Principle<br>
-              HTML/CSS · JavaScript · GSAP
+              Figma · Photoshop · Illustrator · InDesign
             </p>
           </div>
           <div class="profile__block profile-anim-right">
             <h3 class="profile__label">WORKFLOW</h3>
             <p class="profile__body">
-              Research → Wireframe → Prototype<br>
-              Usability Test → Handoff → Iteration
+              Vibe Coding · Claude / Cursor / GPT
             </p>
           </div>
           <div class="profile__block profile-anim-right">
             <h3 class="profile__label">OUTPUT</h3>
             <p class="profile__body">
-              Web · Mobile App · Editorial<br>
-              Brand Identity · Design System
+              Branding · Package · Editorial / UI/UX · Detail Page · Banner / Emoticon · Pattern
             </p>
           </div>
         </div>
 
-        <!-- 하단 유도 -->
-        <nav class="about-nav profile-anim-nav" aria-label="Next section">
-          <div class="about-nav-symbols" aria-hidden="true">
-            <span class="about-nav__sym about-nav__sym--1">菊</span>
-            <span class="about-nav__sym about-nav__sym--2">✦</span>
-            <span class="about-nav__sym about-nav__sym--3">✧</span>
-            <span class="about-nav__sym about-nav__sym--4">·</span>
-            <span class="about-nav__line"></span>
+        <!-- 하단 유도 (col 9–12) -->
+        <nav class="profile-nav profile-anim-nav" aria-label="Next section">
+          <div class="profile-nav__symbols" aria-hidden="true">
+            <span class="profile-nav__sym profile-nav__sym--1">菊</span>
+            <span class="profile-nav__sym profile-nav__sym--2">✦</span>
+            <span class="profile-nav__sym profile-nav__sym--3">✧</span>
+            <span class="profile-nav__sym profile-nav__sym--4">·</span>
           </div>
-          <a class="about-nav__link about-nav-text" href="#work">삶과 죽음이 닿는 자리에서</a>
+          <a class="profile-nav__link" href="#work">삶과 죽음이 닿는 자리에서</a>
+          <span class="profile-nav__line" aria-hidden="true"></span>
         </nav>
 
       </div>
