@@ -1,0 +1,55 @@
+/* ============================================
+   愛悼 — Design Tokens (variables.css)
+   ============================================ */
+
+:root {
+  /* --- Colors --- */
+  --color-primary:   #74070D;
+  --color-secondary: #4D0C12;
+  --color-third:     #30050E;
+  --color-black:     #1E100F;
+  --color-white:     #F6F3E4;
+
+  --color-white-70: rgba(246, 243, 228, 0.70);
+  --color-white-50: rgba(246, 243, 228, 0.50);
+  --color-white-45: rgba(246, 243, 228, 0.45);
+
+  /* --- Fonts --- */
+  --font-display: 'Hahmlet', serif;
+  --font-kanji:   'Zen Old Mincho', serif;
+  --font-body:    'Paperlogy', sans-serif;
+  --font-script:  'NanumSonPyeonJiCe', sans-serif;
+
+  /* --- Grid (1440 / 12col / 102px / 20px gutter) --- */
+  --grid-max-width: 1440px;
+  --grid-columns:   12;
+  --grid-col-width: 102px;
+  --grid-gutter:    20px;
+
+  /* --- Layout --- */
+  --padding-x: clamp(1.25rem, 5vw, 6rem);
+  --padding-y: clamp(1.5rem, 7vh, 5rem);
+
+  /* --- KV Typography (clamp only — px 고정 금지) --- */
+  --kv-fs-logo:    clamp(18px, 4.5vw, 24px);
+  --kv-fs-title:   clamp(72px, 22vw, 237px);
+  --kv-fs-copy-kr: clamp(18px, 4.2vw, 29px);
+  --kv-fs-copy-en: clamp(15px, 3.8vw, 20px);
+  --kv-fs-kanji:   clamp(44px, 12vw, 74px);
+  --kv-fs-author:  clamp(14px, 3.6vw, 16px);
+
+  --kv-lh-title: 1.15;
+  --kv-lh-copy:  1.5;
+  --kv-ls-title: 0.03em;
+
+  /* --- KV Spacing --- */
+  --kv-gap-block: clamp(1rem, 3dvh, 2rem);
+  --kv-header-pad-top: clamp(1.75rem, 5dvh, 2.75rem);
+  --kv-flower-height: clamp(38dvh, 46dvh, 52dvh);
+  /* vw 스케일: 시안 대비 꽃+모션블러 폭. 100vw 컨테이너 overflow:hidden으로 클립 */
+  --kv-flower-width: clamp(120vw, 132vw, 142vw);
+
+  /* Desktop artboard (1920×1024) */
+  --kv-artboard-w: 1920;
+  --kv-artboard-h: 1024;
+}

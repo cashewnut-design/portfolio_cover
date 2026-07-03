@@ -58,6 +58,8 @@
 
     /* KV 레이아웃 */
     --kv-header-top: 28px;
+    --gnb-inner-height: 48px;
+    --gnb-total-height: calc(var(--kv-header-top) + var(--gnb-inner-height));
     --kv-artboard-w: 1920;
     --kv-artboard-h: 1024;
 
@@ -101,9 +103,29 @@
     -moz-osx-font-smoothing: grayscale;
   }
   
-  /* Locomotive Scroll 대상 */
+  /* Locomotive Scroll 대상 — 헤더(z-index: 1000) 아래 레이어로 고정 */
   [data-scroll-container] {
+    position: relative;
+    z-index: 1;
+    isolation: isolate;
     min-height: 100vh;
+    padding-top: var(--gnb-total-height);
+    box-sizing: border-box;
+  }
+
+  /* Locomotive Scroll v4 커스텀 스크롤바 (.c-scrollbar_thumb: #000) — 미사용 */
+  .c-scrollbar {
+    display: none !important;
+  }
+
+  [data-scroll-container] [data-scroll-section] {
+    position: relative;
+    z-index: 0;
+  }
+
+  /* KV는 풀스크린 — 스크롤 컨테이너 padding 상쇄 */
+  [data-scroll-container] > #kv {
+    margin-top: calc(-1 * var(--gnb-total-height));
   }
   
   
@@ -291,9 +313,8 @@
 
 
   /* ============================================
-     4-1. GNB (공통 컴포넌트)
+     4-1. GNB (공통 컴포넌트 — KV 기준)
      ============================================ */
-
   .gnb {
     display: flex;
     justify-content: space-between;
@@ -302,22 +323,11 @@
   }
 
   .gnb__logo,
-  .gnb__nav .nav-link {
+  .gnb__nav .nav-link,
+  .nav-modal .nav-logo,
+  .nav-modal .nav-link {
     font-family: var(--font-kanji), var(--font-display);
     color: var(--color-white);
-  }
-
-  .gnb__nav .nav-muted {
-    font-family: var(--font-kanji), var(--font-display);
-  }
-
-  .gnb__nav .nav-link {
-    font-weight: 600;
-  }
-
-  .gnb__nav .nav-muted.t-muted45 {
-    color: var(--color-white-45);
-    font-weight: 400;
   }
 
   .gnb__nav {
@@ -328,42 +338,39 @@
     gap: 16px;
   }
 
-  .nav-link {
+  .gnb__nav .nav-link,
+  .nav-modal .nav-link {
+    font-weight: 600;
     cursor: pointer;
   }
 
-  .nav-muted {
+  .gnb__nav .nav-muted,
+  .nav-modal .nav-muted {
+    font-family: var(--font-kanji), var(--font-display);
     font-weight: 400;
   }
 
-  /* KV 전용 GNB */
-  .kv-header {
-    position: absolute;
-    top: 28px;
-    left: 0;
-    right: 0;
-    z-index: 10;
+  .gnb__nav .nav-muted.t-muted45,
+  .nav-modal .nav-muted.t-muted45 {
+    color: var(--color-white-45);
   }
 
-  /* KV 이후 고정 GNB — top: 28px 에서 스크롤 따라감 */
+  /* 고정 GNB — 전역, 스크롤 콘텐츠 위에 항상 표시 */
   .site-gnb {
     position: fixed;
-    top: 28px;
+    top: var(--kv-header-top);
     left: 0;
     right: 0;
-    z-index: 100;
-    visibility: hidden;
+    z-index: 1000;
+    isolation: isolate;
+    min-height: var(--gnb-inner-height);
+    box-sizing: border-box;
     pointer-events: none;
-    transform: translateY(-12px);
-    transition:
-      visibility 0.4s var(--ease-out),
-      transform 0.4s var(--ease-out);
   }
 
-  .site-gnb.is-visible {
-    visibility: visible;
+  .site-gnb .gnb__logo,
+  .site-gnb .gnb__nav {
     pointer-events: auto;
-    transform: translateY(0);
   }
   
   
@@ -477,8 +484,8 @@
       --fs-kanji-3:   clamp(28px, 6.5vw, 48px);
       --fs-kanji-4:   clamp(18px, 4.5vw, 24px);
       --fs-kanji-5:   clamp(16px, 4vw, 20px);
-      --fs-kv-display: clamp(60px, 18vw, 140px);
-      --fs-kv-kanji:   clamp(40px, 10vw, 74px);
+      --fs-kv-display: clamp(72px, 22vw, 96px);
+      --fs-kv-kanji:   clamp(44px, 12vw, 56px);
       --fs-intermission: clamp(48px, 12vw, 100px);
       --fs-b1:  20px;
       --fs-b2:  17px;
@@ -493,174 +500,15 @@
 
 
 /* ============================================
-   9. KV Section (#kv)
+   9. KV Section — css/sections/kv.css 로 이관 (1단계)
    ============================================ */
 
-#kv {
-  position: relative;
-  width: 100%;
-  height: 100dvh;
-  min-height: 100vh;
-  background-color: var(--color-primary);
-  overflow: hidden;
-  font-family: var(--font-display);
-}
-
-/* 배경 */
-.kv-bg {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-}
-
-.kv-bg__base,
-.kv-bg .grain-overlay {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.kv-bg__base {
-  background-color: var(--color-primary);
-}
-
-/* 중앙 컴포지션 스테이지 */
-.kv-stage {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-}
-
-/* 피그마 1920×1024 아트보드 — 뷰포트 안에 완전히 수납 */
-.kv-artboard {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  aspect-ratio: var(--kv-artboard-w) / var(--kv-artboard-h);
-  width: min(100vw, calc(100% * var(--kv-artboard-w) / var(--kv-artboard-h)));
-  max-height: 100%;
-  height: auto;
-}
-
-/* PORTFOLIO — 꽃 뒤 (z-index: 2) */
-.kv-portfolio {
-  position: absolute;
-  top: calc(28% + 60px);
-  left: 50%;
-  transform: translate(-50%, -80%);
-  width: 100%;
-  text-align: center;
-  white-space: nowrap;
-  z-index: 2;
-}
-
-/* 꽃 이미지 — 아트보드 전체 (z-index: 3) */
-.kv-flower-wrap {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-}
-
-.kv-flower {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: center center;
-  mix-blend-mode: multiply;
-}
-
-/* 愛悼 — 꽃 중심부 (z-index: 4) */
-.kv-kanji {
-  position: absolute;
-  top: 56%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 4;
-  letter-spacing: 0.05em;
-}
-
-/* GNB — Kanji-4 */
-#kv .kv-subtitle-kr,
-#kv .kv-subtitle-en,
-#kv .kv-presented-by,
-#kv .kv-name {
-  color: var(--color-white);
-}
-
-/* 좌측 하단 */
-.kv-bottom-left {
-  position: absolute;
-  bottom: var(--padding-y);
-  left: var(--padding-x);
-  z-index: 10;
-  max-width: min(40ch, 70vw);
-}
-
-.kv-subtitle-en {
-  margin-top: 6px;
-}
-
-/* 우측 하단 */
-.kv-bottom-right {
-  position: absolute;
-  bottom: var(--padding-y);
-  right: var(--padding-x);
-  z-index: 10;
-  text-align: right;
-}
-
-.kv-name {
-  margin-top: 4px;
-  font-weight: 600;
-}
-
-/* GSAP 초기 상태 */
-.anim-kv-portfolio {
-  opacity: 0;
-  will-change: transform, opacity;
-}
-
-.anim-kv-flower {
-  opacity: 0;
-  will-change: opacity;
-}
-
-.anim-kv-kanji {
-  opacity: 0;
-  will-change: opacity;
-}
-
-.anim-kv-bottom-left,
-.anim-kv-bottom-right {
-  opacity: 0;
-  transform: translateY(10px);
-  will-change: transform, opacity;
-}
-
-.anim-kv-header {
-  opacity: 0;
-  transform: translateY(-10px);
-  will-change: transform, opacity;
-}
-
-/* GSAP 미로드 시 KV 노출 */
-.no-js-anim .anim-kv-portfolio,
-.no-js-anim .anim-kv-flower,
-.no-js-anim .anim-kv-kanji,
-.no-js-anim .anim-kv-header,
-.no-js-anim .anim-kv-bottom-left,
-.no-js-anim .anim-kv-bottom-right,
-.no-js-anim .anim-up,
-.no-js-anim .anim-fade {
-  opacity: 1;
-  transform: none;
-}
-
 @media (max-width: 768px) {
+  /* KV 모바일: kv-header 로고 사용 — 전역 GNB 중복 방지 */
+  .site-gnb {
+    display: none;
+  }
+
   .gnb__nav {
     display: none;
   }
@@ -802,7 +650,7 @@
 #profile {
   position: relative;
   width: 100%;
-  background-color: var(--color-secondary);
+  background-color: var(--color-primary);
   color: var(--color-white);
   padding-top: 150px;
   padding-bottom: clamp(3rem, 8vh, 5rem);
@@ -824,20 +672,27 @@
 }
 
 .profile__left {
-  grid-column: 1 / 5;
+  grid-column: 1 / 4;
 }
 
 .profile__center {
   grid-column: 5 / 9;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
 }
 
 .profile__right {
   grid-column: 9 / 13;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
 }
 
 /* 프로필 이미지 */
 .profile__img-wrap {
   width: 100%;
+  max-width: 280px;
   aspect-ratio: 3 / 4;
   overflow: hidden;
 }
@@ -860,13 +715,7 @@
 /* 인용구 */
 .profile__quote {
   margin-top: 20px;
-  font-family: var(--font-kanji);
-  font-size: 14px;
-  font-style: italic;
-  font-weight: 400;
   letter-spacing: 0.04em;
-  line-height: 1.6;
-  color: var(--color-white);
 }
 
 /* 타이포 분해 */
@@ -874,77 +723,43 @@
   margin-top: 20px;
   display: flex;
   flex-direction: column;
+  gap: 8px;
 }
 
-.profile__kanji-row {
+.profile__kanji-item {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
 }
 
-.profile__kanji-row--second {
-  margin-top: 8px;
-}
-
-.profile__kanji-char {
-  font-family: var(--font-kanji);
-  font-size: 52px;
-  font-weight: 700;
+#profile .profile__kanji-char {
   line-height: 1;
-  color: var(--color-white);
 }
 
 .profile__kanji-meta {
   display: flex;
   flex-direction: column;
-  gap: 4px;
 }
 
-.profile__kanji-en {
-  font-family: var(--font-kanji);
-  font-size: 18px;
-  font-weight: 400;
-  color: var(--color-white);
-}
-
-.profile__kanji-pron {
-  font-family: var(--font-body);
-  font-size: 12px;
-  font-weight: 400;
-  color: var(--color-white-50);
+#profile .profile__kanji-rom {
+  margin-top: 2px;
 }
 
 /* 중앙 · 우측 컬럼 공통 */
-.profile__label {
-  font-family: var(--font-kanji);
-  font-size: 18px;
+#profile .profile__label {
   font-weight: 600;
   letter-spacing: 0.06em;
   margin-bottom: 10px;
-  color: var(--color-white);
 }
 
-.profile__body {
-  font-family: var(--font-body);
-  font-size: 13px;
-  font-weight: 300;
-  line-height: 1.9;
+#profile .profile__body {
   letter-spacing: 0.02em;
-  color: var(--color-white-70);
-}
-
-.profile__center > .profile__block,
-.profile__right > .profile__block {
-  margin-top: 32px;
-}
-
-.profile__center > .profile__block:first-child,
-.profile__right > .profile__block:first-child {
-  margin-top: 0;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 /* 하단 유도 */
-.profile-nav {
+.about-nav {
   position: absolute;
   right: 0;
   bottom: 0;
@@ -952,55 +767,53 @@
   flex-direction: column;
   align-items: flex-end;
   grid-column: 9 / 13;
+  padding-bottom: 0;
+  text-decoration: none;
+  color: inherit;
+  transform: translateY(2px);
 }
 
-.profile-nav__symbols {
+.about-nav-symbols {
   display: block;
   text-align: right;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
+  padding-right: 2px;
 }
 
-.profile-nav__sym {
+.about-nav__sym {
   display: inline-block;
   margin-left: 6px;
-  font-family: var(--font-kanji);
-  font-size: 12px;
-  color: var(--color-white-50);
-  animation: float-sym 3s ease-in-out infinite;
 }
 
-.profile-nav__sym:first-child {
+.about-nav__sym:first-child {
   margin-left: 0;
 }
 
-.profile-nav__link {
+.about-nav-text {
   display: block;
   text-align: right;
+  letter-spacing: 0.04em;
+}
+
+.about-nav__sym {
   font-family: var(--font-kanji);
-  font-size: 16px;
-  font-style: italic;
-  font-weight: 400;
-  color: color-mix(in srgb, var(--color-white) 75%, transparent);
-  text-decoration: none;
-  transition: color 0.4s var(--ease-out);
-}
-
-.profile-nav__link:hover {
+  font-size: var(--fs-h5);
   color: var(--color-white);
+  animation: float-sym 3s ease-in-out infinite;
 }
 
-.profile-nav__sym--1 { animation-delay: 0s; }
-.profile-nav__sym--2 { animation-delay: 0.4s; }
-.profile-nav__sym--3 { animation-delay: 0.8s; }
-.profile-nav__sym--4 { animation-delay: 1.2s; }
+.about-nav__sym--1 { animation-delay: 0s; }
+.about-nav__sym--2 { animation-delay: 0.4s; }
+.about-nav__sym--3 { animation-delay: 0.8s; }
+.about-nav__sym--4 { animation-delay: 1.2s; }
 
-.profile-nav__line {
+.about-nav__line {
   display: block;
-  width: 80px;
+  width: 120px;
   height: 1px;
-  margin-top: 8px;
+  margin-top: 6px;
   margin-left: auto;
-  background-color: var(--color-white-50);
+  background-color: var(--color-white);
   transform: scaleX(0);
   transform-origin: right center;
   animation: line-flow 2.5s ease-in-out infinite;
@@ -1045,13 +858,23 @@
 
   .profile__center,
   .profile__right {
-    margin-top: clamp(2rem, 5vh, 3rem);
+    gap: 32px;
   }
 
-  .profile-nav {
+  .profile__img-wrap {
+    max-width: 100%;
+  }
+
+  .about-nav {
     position: static;
     grid-column: 1 / -1;
     align-items: flex-end;
     margin-top: clamp(2rem, 5vh, 3rem);
+    transform: none;
   }
 }
+
+/* ============================================
+   Intermission 이하 — style.css 유지
+   KV 반응형: css/sections/kv.css (1단계)
+   ============================================ */

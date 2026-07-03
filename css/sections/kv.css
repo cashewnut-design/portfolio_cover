@@ -1,0 +1,408 @@
+/* ============================================
+   愛悼 — KV Section (1단계: HTML + CSS 골격)
+   ============================================ */
+
+/* 모바일: 전역 GNB 숨김 — kv-header 로고만 사용 (style.css .gnb flex 덮어쓰기 보조) */
+@media screen and (max-width: 768px) {
+  .site-gnb,
+  .site-gnb.gnb {
+    display: none !important;
+  }
+}
+
+/* --- Container --- */
+.kv,
+#kv {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-height: 100dvh;
+  height: 100dvh;
+  overflow: hidden; /* vw 꽃 돌출분 클립 — body overflow-x:hidden에 의존하지 않음 */
+  background-color: var(--color-primary);
+  font-family: var(--font-display);
+  color: var(--color-white);
+}
+
+/* --- 배경 레이어 (z-index: 0) --- */
+.kv-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.kv-bg__base {
+  position: absolute;
+  inset: 0;
+  background-color: var(--color-primary);
+}
+
+/* --- 국화 + 워터마크 배경 레이어 (z-index: 2–5) --- */
+.kv-visual {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  overflow: hidden; /* 100vw 초과 이미지가 스크롤을 만들지 않도록 클립 */
+}
+
+.kv-flower-wrap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  max-width: 100%;
+  height: var(--kv-flower-height);
+  overflow: hidden; /* object-fit:contain + vw 폭 확대 시 좌우 돌출 방지 */
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.kv-flower {
+  display: block;
+  width: var(--kv-flower-width);
+  max-width: none; /* reset.css max-width:100% 무시 — 의도적 vw 스케일 */
+  height: auto;
+  object-fit: contain; /* 모션블러 번짐 유지 — cover는 블러 잘림 */
+  object-position: center bottom;
+  mix-blend-mode: multiply;
+  flex-shrink: 0;
+}
+
+.kv-kanji {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(7rem, 22dvh, 10.5rem);
+  transform: translateX(-50%);
+  z-index: 5;
+  margin: 0;
+  font-family: var(--font-kanji);
+  font-weight: 600;
+  font-size: var(--kv-fs-kanji);
+  line-height: 1;
+  color: var(--color-primary);
+  text-shadow: 0 4px 20px rgba(246, 243, 228, 0.6);
+  letter-spacing: 0.05em;
+}
+
+/* --- 텍스트 스택 (z-index: 10+) — flex + gap으로 겹침 방지 --- */
+.kv-inner {
+  position: relative;
+  z-index: 10;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--kv-gap-block);
+  width: 100%;
+  max-width: var(--grid-max-width);
+  min-height: 100dvh;
+  margin-inline: auto;
+  padding:
+    var(--kv-header-pad-top)
+    var(--padding-x)
+    var(--padding-y);
+}
+
+/* 1. 헤더: 愛悼(좌) + 메뉴(우) */
+.kv-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  width: 100%;
+}
+
+.kv-header__logo {
+  font-family: var(--font-kanji), var(--font-display);
+  font-weight: 400;
+  font-size: var(--kv-fs-logo);
+  line-height: var(--kv-lh-copy);
+  color: var(--color-white);
+}
+
+.kv-header__menu {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(2rem, 8vw, 2.5rem);
+  height: clamp(2rem, 8vw, 2.5rem);
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 4vw, 1.5rem);
+  line-height: 1;
+  color: var(--color-white);
+}
+
+.kv-header__menu-lines {
+  display: block;
+  width: clamp(1.125rem, 4.5vw, 1.375rem);
+  height: clamp(0.625rem, 2vw, 0.75rem);
+  background:
+    linear-gradient(var(--color-white) 0 0) 0 0 / 100% 2px no-repeat,
+    linear-gradient(var(--color-white) 0 0) 0 50% / 100% 2px no-repeat,
+    linear-gradient(var(--color-white) 0 0) 0 100% / 100% 2px no-repeat;
+}
+
+/* 2–3. 타이틀 + 서브카피 */
+.kv-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--kv-gap-block);
+  width: 100%;
+  text-align: center;
+}
+
+.kv-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--kv-fs-title);
+  line-height: var(--kv-lh-title);
+  letter-spacing: var(--kv-ls-title);
+  color: var(--color-white);
+}
+
+.kv-title__desktop {
+  display: none;
+}
+
+.kv-title__mobile {
+  display: block;
+  white-space: normal;
+}
+
+.kv-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(4px, 1dvh, 8px);
+  width: 100%;
+  max-width: 100%;
+}
+
+.kv-subtitle-kr {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 200;
+  font-size: var(--kv-fs-copy-kr);
+  line-height: var(--kv-lh-copy);
+  color: var(--color-white);
+  word-break: keep-all;
+}
+
+.kv-subtitle-en {
+  margin: 0;
+  font-family: var(--font-kanji), var(--font-display);
+  font-weight: 400;
+  font-size: var(--kv-fs-copy-en);
+  line-height: var(--kv-lh-copy);
+  color: var(--color-white);
+}
+
+/* 5. Presented by — 하단 좌측 */
+.kv-author {
+  margin-top: auto;
+  flex-shrink: 0;
+  align-self: flex-start;
+  font-family: var(--font-display);
+  font-size: var(--kv-fs-author);
+  line-height: 1.4;
+  color: var(--color-white);
+  white-space: nowrap;
+}
+
+.kv-author__label {
+  margin: 0;
+  font-weight: 400;
+}
+
+.kv-author__name {
+  margin: clamp(2px, 0.5dvh, 4px) 0 0;
+  font-weight: 500;
+  font-size: clamp(15px, 4vw, 18px);
+}
+
+/* =========================================
+   Mobile Override (max-width: 768px)
+   — iPhone 16 Pro 등 좁고 긴 뷰포트 대응
+========================================= */
+@media screen and (max-width: 768px) {
+
+  /* 1. 로고 줄바꿈·겹침 방지 (KV 헤더만 노출) */
+  .kv-header__logo {
+    white-space: nowrap !important;
+    line-height: 1 !important;
+  }
+
+  .kv-inner {
+    position: relative;
+    padding-bottom: clamp(4rem, 12dvh, 6rem);
+  }
+
+  /* 2. 국화 — 하단 밀착 + 웅장한 볼륨 (150vw / min 600px) */
+  .kv-flower-wrap {
+    position: absolute !important;
+    bottom: 0 !important;
+    left: 50% !important;
+    right: auto !important;
+    top: auto !important;
+    transform: translateX(-50%) !important;
+    width: max(150vw, 600px) !important;
+    min-width: 600px !important;
+    max-width: none !important;
+    height: auto !important;
+    overflow: hidden !important;
+    display: flex !important;
+    align-items: flex-end !important;
+    justify-content: center !important;
+  }
+
+  .kv-flower {
+    position: relative !important;
+    bottom: 0 !important;
+    left: auto !important;
+    transform: none !important;
+    width: max(150vw, 600px) !important;
+    min-width: 600px !important;
+    max-width: none !important;
+    height: auto !important;
+    object-fit: contain !important;
+    object-position: center bottom !important;
+  }
+
+  /* 3. 愛悼 — 꽃 중심, vw 기준으로 꽃 크기에 연동 */
+  .kv-kanji {
+    top: auto !important;
+    bottom: 28vw !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    font-size: clamp(44px, 14vw, 56px) !important;
+    z-index: 5 !important;
+  }
+
+  /* 4. Presented by — 화면 좌하단 고정 */
+  .kv-author {
+    position: absolute !important;
+    bottom: 20px !important;
+    left: var(--padding-x) !important;
+    right: auto !important;
+    margin-top: 0 !important;
+    align-self: auto !important;
+    z-index: 15 !important;
+  }
+}
+
+/* --- Desktop (769px+): 1920×1024 아트보드 컴포지션 복원 --- */
+@media screen and (min-width: 769px) {
+
+  /* PC: 전역 GNB 노출, KV 내부 헤더 숨김 */
+  .kv-header {
+    display: none;
+  }
+
+  .kv-inner {
+    position: absolute;
+    inset: 0;
+    display: block;
+    max-width: none;
+    min-height: 0;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    pointer-events: none;
+  }
+
+  .kv-inner > * {
+    pointer-events: auto;
+  }
+
+  /* 타이틀·카피 분리 배치 */
+  .kv-body {
+    display: contents;
+  }
+
+  .kv-title {
+    position: absolute;
+    top: calc(28% + 60px);
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    max-width: 100%;
+    padding: 0 2vw;
+    text-align: center;
+    white-space: nowrap;
+    z-index: 3;
+  }
+
+  .kv-title__desktop {
+    display: inline;
+  }
+
+  .kv-title__mobile {
+    display: none;
+  }
+
+  .kv-copy {
+    position: absolute;
+    bottom: var(--padding-y);
+    left: var(--padding-x);
+    align-items: flex-start;
+    text-align: left;
+    width: auto;
+    max-width: min(40ch, 70vw);
+    z-index: 10;
+  }
+
+  .kv-author {
+    position: absolute;
+    bottom: var(--padding-y);
+    right: var(--padding-x);
+    left: auto;
+    margin-top: 0;
+    align-self: auto;
+    text-align: right;
+    z-index: 10;
+  }
+
+  /* 국화: 뷰포트 중앙 아트보드 */
+  .kv-visual {
+    z-index: 2;
+  }
+
+  .kv-flower-wrap {
+    top: 50%;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    transform: translate(-50%, -50%);
+    width: min(100vw, calc(100dvh * var(--kv-artboard-w) / var(--kv-artboard-h)));
+    max-width: 100vw;
+    max-height: 100dvh;
+    height: auto;
+    aspect-ratio: var(--kv-artboard-w) / var(--kv-artboard-h);
+    overflow: visible;
+  }
+
+  .kv-flower {
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center center;
+  }
+
+  /* 愛悼: 꽃 중심 */
+  .kv-kanji {
+    top: 56%;
+    bottom: auto;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: clamp(56px, 5vw, 74px);
+    z-index: 5;
+  }
+}

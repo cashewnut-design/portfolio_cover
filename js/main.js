@@ -12,7 +12,7 @@ function hasGsap() {
 
 function showKvFallback() {
   document.querySelectorAll(
-    '.anim-kv-portfolio, .anim-kv-flower, .anim-kv-kanji, .anim-kv-header, .anim-kv-bottom-left, .anim-kv-bottom-right'
+    '.anim-kv-portfolio, .anim-kv-flower, .anim-kv-kanji, .anim-kv-bottom-left, .anim-kv-bottom-right'
   ).forEach((el) => {
     el.style.opacity = '1';
     el.style.transform = '';
@@ -73,7 +73,7 @@ function initKvLoadAnimation() {
   if (!document.querySelector('#kv') || !hasGsap()) return;
 
   gsap.killTweensOf(
-    '.kv-portfolio, .anim-kv-header, .anim-kv-bottom-left, .anim-kv-bottom-right, .anim-kv-flower, .anim-kv-kanji'
+    '.kv-portfolio, .anim-kv-bottom-left, .anim-kv-bottom-right, .anim-kv-flower, .anim-kv-kanji'
   );
 
   const tl = gsap.timeline({
@@ -88,12 +88,6 @@ function initKvLoadAnimation() {
     duration: 0.9,
     ease: 'power3.out',
   }, 0.1)
-    .to('.anim-kv-header', {
-      y: 0,
-      opacity: 1,
-      duration: 0.5,
-      ease: 'power2.out',
-    }, 0)
     .to('.anim-kv-bottom-left', {
       y: 0,
       opacity: 1,
@@ -123,6 +117,11 @@ function initKvScrollEffects() {
 
   const scroller = getScrollContainer();
   if (!scroller || !window.locoScroll) return;
+
+  if (window.matchMedia('(max-width: 768px)').matches) {
+    gsap.set('.kv-artboard', { clearProps: 'transform' });
+    return;
+  }
 
   ScrollTrigger.getAll()
     .filter((st) => st.vars && st.vars.id && String(st.vars.id).startsWith('kv-scroll-'))
@@ -190,49 +189,25 @@ function initRevealAnimations() {
   });
 }
 
-function initSiteGnb() {
-  const gnb = document.querySelector('.site-gnb');
-  const kv = document.querySelector('#kv');
-  const scroller = getScrollContainer();
+function initNavModal() {
+  const modal = document.querySelector('.nav-modal');
+  const openBtn = document.querySelector('[data-nav-open]');
+  const closeBtn = document.querySelector('[data-nav-close]');
 
-  if (!gnb || !kv || !scroller || !hasGsap()) return;
+  if (!modal || !openBtn || !closeBtn) return;
 
-  /* KV를 지나면(인터미션·About부터) KV와 동일한 위치에 고정 GNB 표시 */
-  ScrollTrigger.create({
-    trigger: kv,
-    scroller,
-    start: 'bottom top',
-    onEnter: () => {
-      gnb.classList.add('is-visible');
-      gnb.setAttribute('aria-hidden', 'false');
-    },
-    onLeaveBack: () => {
-      gnb.classList.remove('is-visible');
-      gnb.setAttribute('aria-hidden', 'true');
-    },
+  openBtn.addEventListener('click', () => {
+    modal.classList.add('is-active');
+    modal.setAttribute('aria-hidden', 'false');
+  });
+
+  closeBtn.addEventListener('click', () => {
+    modal.classList.remove('is-active');
+    modal.setAttribute('aria-hidden', 'true');
   });
 }
 
-function initKvHeader() {
-  const header = document.querySelector('.kv-header');
-  if (!header || typeof window.locoScroll === 'undefined') return;
-
-  let lastScrollY = 0;
-
-  window.locoScroll.on('scroll', ({ scroll }) => {
-    const currentY = scroll.y;
-
-    if (currentY > lastScrollY && currentY > 100) {
-      gsap.to(header, { y: '-100%', opacity: 0, duration: 0.3, ease: 'power2.out' });
-    } else {
-      gsap.to(header, { y: 0, opacity: 1, duration: 0.3, ease: 'power2.out' });
-    }
-
-    lastScrollY = currentY;
-  });
-}
-
-function initSiteNav() {
+function initKvNav() {
   document.querySelectorAll('.nav-link[data-scroll]').forEach((link) => {
     link.addEventListener('click', () => {
       const target = link.dataset.scroll;
@@ -247,6 +222,9 @@ function initSiteNav() {
 }
 
 function bootMain() {
+  initNavModal();
+  initWorkSection();
+
   if (!hasGsap()) {
     document.documentElement.classList.add('no-js-anim');
     showKvFallback();
@@ -255,7 +233,7 @@ function bootMain() {
 
   gsap.registerPlugin(ScrollTrigger);
   initKvLoadAnimation();
-  initSiteNav();
+  initKvNav();
 }
 
 window.addEventListener('loco:ready', () => {
@@ -263,8 +241,6 @@ window.addEventListener('loco:ready', () => {
 
   setupSectionAnimations();
   initRevealAnimations();
-  initKvHeader();
-  initSiteGnb();
 });
 
 window.addEventListener('load', () => {
