@@ -40,7 +40,8 @@ function initScroll() {
         height: window.innerHeight,
       };
     },
-    pinType: container.style.transform ? 'transform' : 'fixed',
+    pinType: 'transform', /* smooth:true만 사용 — container.style.transform은
+      LocomotiveScroll 생성 직후 아직 비어 있어 'fixed'로 잘못 폴백됨 */
   });
 
   ScrollTrigger.defaults({ scroller: container });

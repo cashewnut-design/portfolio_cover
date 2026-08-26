@@ -2,442 +2,281 @@
    愛悼 — Work Section (12-col Grid / Desktop)
    ============================================ */
 
-.work {
+.work-section {
   position: relative;
-  width: 100%;
-  background-color: var(--color-third);
-  padding: clamp(5rem, 12vh, 8rem) 0;
+  background-color: var(--color-primary); /* #74070D — KV/About/Profile과 동일 배경으로 통일 */
 }
 
-.work__inner {
-  width: 100%;
-  max-width: var(--grid-max-width);
-  margin-inline: auto;
-  padding-inline: var(--padding-x);
-  box-sizing: border-box;
+/* ============================================
+   그리드 — max-width 1440 / 12col / gap 20 / 좌우 안전마진 40px
+   Work 섹션 전용 스코프 (다른 섹션의 .container/.grid-12에는 영향 없음)
+   ============================================ */
+.work-container {
+  position: relative;
+  max-width: 1440px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 20px;
+  padding: 0 40px;
 }
 
-/* --- Header --- */
-.work-header {
+/* ============================================
+   상단 — 타이틀(2줄 스택) + 우측 서브카피 + 필터 탭 (밀도 있게)
+   ============================================ */
+.work-top {
+  padding-top: 12vh;
+  padding-bottom: 24px;
+}
+
+.work-top__title {
+  grid-column: 1 / 7;
   display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: var(--grid-gutter);
-  margin-bottom: clamp(2rem, 5vh, 3rem);
+  flex-direction: column;
+  line-height: 1.05;
+  margin-bottom: 20px;
 }
 
-.work-header__title {
-  margin: 0;
+.work-top__title-line {
+  display: block;
 }
 
-.work-header__desc {
-  margin: 0;
-  max-width: 28ch;
+.work-top__subcopy {
+  grid-column: 8 / -1;
   text-align: right;
+  align-self: start;
 }
 
-/* --- Filter Tabs --- */
-.work-filters {
+.work-top__subcopy-line {
+  margin: 0;
+}
+
+.work-top__subcopy-line--sm {
+  margin-top: 4px;
+  color: var(--color-white-45);
+}
+
+.work-filter-tabs {
+  grid-column: 1 / -1;
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  gap: clamp(1.25rem, 3vw, 2.5rem);
-  margin-bottom: clamp(2.5rem, 6vh, 4rem);
-  padding-bottom: 1.25rem;
-  border-bottom: 1px solid rgba(246, 243, 228, 0.2);
+  gap: 24px;
+  padding-bottom: 16px;
 }
 
 .work-filter {
-  margin: 0;
-  padding: 0;
-  border: none;
   background: none;
-  cursor: pointer;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--color-white-45);
-  transition: color 0.3s ease, font-weight 0.3s ease;
-}
-
-.work-filter.t-h5 {
-  color: var(--color-white-45);
-}
-
-.work-filter:hover {
-  color: var(--color-white-70);
-}
-
-.work-filter.is-active {
-  font-weight: 600;
-  color: var(--color-white);
-  text-decoration: underline;
-  text-underline-offset: 6px;
-  text-decoration-thickness: 1px;
-}
-
-/* --- List + Sticky Badge Container --- */
-.work__body {
-  position: relative;
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: var(--grid-gutter);
-}
-
-.work__list {
-  grid-column: 1 / -1;
-  grid-row: 1;
-  display: flex;
-  flex-direction: column;
-  pointer-events: none;
-}
-
-/* 섹션 진입 후 리스트 옆(col 4~5) 고정 추적 */
-.work-sticky-badge {
-  grid-column: 4 / 6;
-  grid-row: 1;
-  position: sticky;
-  top: 50vh;
-  transform: translateY(-50%);
-  align-self: start;
-  justify-self: center;
-  z-index: 10;
-  width: clamp(196px, 12vw, 216px);
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transition: opacity 0.45s ease, visibility 0.45s ease;
-}
-
-.work-sticky-badge.is-visible {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-  z-index: 50;
-}
-
-.work-sticky-badge.is-open {
-  z-index: 60;
-}
-
-.work-sticky-badge__trigger-wrap {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-}
-
-.work-sticky-badge.is-visible,
-.work-sticky-badge.is-open {
-  overflow: visible;
-}
-
-.work-badge--sticky {
-  font: inherit;
-  color: inherit;
-}
-
-/* 행 내부 배지 — 그리드 간격 유지용(비표시) */
-.work-item .work-badge-wrap .work-badge {
-  visibility: hidden;
-  pointer-events: none;
-}
-
-/* 팝업 메뉴 — 에디토리얼 다크 패널 */
-.work-badge-popup {
-  position: absolute;
-  top: 50%;
-  left: calc(100% + 6px);
-  min-width: 180px;
-  margin: 0;
-  padding: 0;
-  border-radius: 0;
-  background-color: #30050E;
-  border: 1px solid rgba(246, 243, 228, 0.3);
-  box-shadow: none;
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transform: translateY(calc(-50% + 10px));
-  transform-origin: left center;
-  transition:
-    opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-    visibility 0.45s;
-}
-
-/* 배지와 팝업을 잇는 미세 연결선 */
-.work-badge-popup::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  right: 100%;
-  width: 6px;
-  height: 1px;
-  background-color: rgba(246, 243, 228, 0.3);
-  transform: translateY(-50%);
-  pointer-events: none;
-}
-
-.work-sticky-badge.is-open .work-badge-popup {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-  transform: translateY(-50%);
-}
-
-.work-badge-popup__list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.work-badge-popup__row:not(:last-child) {
-  border-bottom: 1px solid rgba(246, 243, 228, 0.2);
-}
-
-.work-badge-popup__item {
-  display: block;
-  width: 100%;
-  margin: 0;
-  padding: 0.75rem 1.25rem;
   border: none;
-  border-radius: 0;
-  background: transparent;
-  background-color: transparent;
+  padding: 0;
+  margin: 0;
   cursor: pointer;
-  text-align: left;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--color-white-70);
-  box-sizing: border-box;
-  appearance: none;
-  -webkit-appearance: none;
+  color: var(--color-white-50);
   transition: color 0.3s ease;
 }
 
-.work-badge-popup__item.t-h5 {
-  color: var(--color-white-70);
-}
-
-.work-badge-popup__item:hover,
-.work-badge-popup__item:focus-visible {
-  color: #74070D;
-  outline: none;
-  background: transparent;
-  background-color: transparent;
-}
-
-.work-badge-popup__item.is-active {
-  color: var(--color-white-70);
-  text-decoration: underline;
-  text-underline-offset: 5px;
-  text-decoration-thickness: 1px;
-}
-
-.work-badge-popup__item.is-active:hover,
-.work-badge-popup__item.is-active:focus-visible {
-  color: #74070D;
-}
-
-/* --- Work Item (12-col row) --- */
-.work-item {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: var(--grid-gutter);
-  align-items: start;
-  pointer-events: auto;
-  padding-bottom: clamp(2.5rem, 6vh, 4rem);
-  margin-bottom: clamp(2.5rem, 6vh, 4rem);
-  border-bottom: 1px solid rgba(246, 243, 228, 0.2);
-}
-
-.work-item:last-child {
-  margin-bottom: 0;
-  border-bottom: none;
-  padding-bottom: 0;
-}
-
-/* 좌측 정보 — col 1~3 */
-.work-info {
-  grid-column: 1 / 4;
-  display: flex;
-  flex-direction: column;
-  gap: clamp(1rem, 2.5vh, 1.5rem);
-}
-
-.work-info__title {
-  margin: 0;
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: clamp(28px, 2.5vw, 35px);
-  line-height: 1.2;
+.work-filter:hover,
+.work-filter.is-active {
   color: var(--color-white);
 }
 
-.work-info__keywords {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
+.work-filter-divider {
+  grid-column: 1 / -1;
+  height: 1px;
+  background-color: var(--color-white-30);
 }
 
-.work-info__keyword {
-  font-family: var(--font-body);
-  font-size: var(--fs-b3);
-  font-weight: 300;
-  line-height: 1.5;
-  color: var(--color-white-70);
-}
-
-/* 중앙 배지 — col 4~5 */
-.work-badge-wrap {
-  grid-column: 4 / 6;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  align-self: center;
-  min-height: 100%;
-}
-
-.work-badge {
+/* ============================================
+   본문 — 배지(GSAP ScrollTrigger pin) + 리스트
+   ============================================ */
+.work-body {
   position: relative;
-  width: clamp(196px, 12vw, 216px);
-  height: clamp(196px, 12vw, 216px);
-  display: block;
+}
+
+/* ============================================
+   🚨 원형 회전 텍스트 뱃지 — 절대 규격 🚨
+   work-item(행) 안에 속한 요소가 아니라 .work-body의 직계 자식으로,
+   리스트 전체에 단 1개만 존재한다. 위치 고정은 GSAP ScrollTrigger의
+   pin으로 처리한다(js/work.js의 initWorkBadgePin 참고) — CSS
+   position:sticky는 Locomotive의 transform 스크롤과 충돌해 쓰지 않는다.
+   GSAP pin도 이 요소의 transform을 직접 덮어쓰므로, 중심 정렬은
+   반드시 margin으로 처리한다(transform 사용 금지).
+   좌표는 모든 행에 대해 고정값 하나 — 행마다 다시 계산하지 않는다.
+   ============================================ */
+.work-badge-wrap {
+  position: absolute;
+  /* GSAP pin은 trigger(첫 .work-row) 시작 조건이 발동하는 순간의 위치를
+     스냅샷으로 고정한다. 그 순간 .work-body 상단은 이미 뷰포트 중앙에
+     와 있고, top 값은 거기서부터의 추가 오프셋이다. 217px는 실측값
+     (.work-list padding-top + 첫 행 padding-top + 타이틀 높이+여백)으로,
+     첫 행 keyword 블록의 세로 중앙과 배지 중앙이 일치하도록 보정한 값. */
+  top: 217px;
+  left: max(526px, calc(50vw - 720px + 526px));
+  width: 140px;
+  height: 140px;
+  margin-top: -70px;
+  margin-left: -70px;
+  z-index: 20; /* 이미지 위에 겹쳐도 항상 보이도록 */
+}
+
+.circular-badge {
+  position: relative;
+  width: 140px;
+  height: 140px;
   border-radius: 50%;
   background-color: transparent;
   border: none;
   padding: 0;
-  pointer-events: none;
-  overflow: visible;
-}
-
-.work-badge.work-badge--sticky {
-  pointer-events: auto;
   cursor: pointer;
-  appearance: none;
-  -webkit-appearance: none;
+  transition: background-color 0.3s ease;
 }
 
-/* Hover 크림 채움 — 기본 상태는 테두리·배경 없음, transform과 분리 */
-.work-badge.work-badge--sticky::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background-color: transparent;
-  opacity: 0;
-  transition: opacity 0.45s ease, background-color 0.45s ease;
-  z-index: 0;
-  pointer-events: none;
+.circular-badge:hover,
+.circular-badge.is-hovered {
+  background-color: var(--color-white);
 }
 
-.work-badge.work-badge--sticky:hover::after,
-.work-badge.work-badge--sticky.is-hovered::after {
-  opacity: 1;
-  background-color: #F6F3E4;
-}
-
-/* 텍스트 링 — circleContainer 전체 회전 (25s / 바퀴) */
 .work-badge__ring {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-  pointer-events: none;
-  overflow: visible;
-}
-
-.work-badge__circle-container {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 0;
-  height: 0;
-  transform-origin: 0 0;
-  animation: work-badge-ring-spin 25s linear infinite;
 }
 
 .work-badge__char {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform-origin: 0 0;
+  font-family: var(--font-display); /* Hahmlet — 전역 h5와 동일 계열 */
+  font-weight: 500;
+  font-size: 11px;
   line-height: 1;
-  letter-spacing: 0;
+  color: var(--color-white);
   white-space: nowrap;
-  pointer-events: none;
+  transition: color 0.3s ease;
 }
 
-.work-badge__char.t-h5 {
+.circular-badge:hover .work-badge__char,
+.circular-badge.is-hovered .work-badge__char {
+  color: var(--color-primary);
+}
+
+/* 카테고리 팝업 — 전역 h5 타이포그래피 스타일 그대로 (크기 임의 확대 금지) */
+.work-badge-popup {
+  position: absolute;
+  top: 50%;
+  left: calc(100% + 28px);
+  transform: translateY(0);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  z-index: 5;
+}
+
+.work-badge-wrap.is-open .work-badge-popup {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.work-badge-popup__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.work-badge-popup__item {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  color: var(--color-white-50);
+  transition: color 0.3s ease;
+  white-space: nowrap;
+  text-align: left;
+}
+
+.work-badge-popup__item:hover,
+.work-badge-popup__item.is-active {
   color: var(--color-white);
 }
 
-@keyframes work-badge-ring-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+/* ============================================
+   리스트 — 데이터 배열 기반 반복 항목
+   컬럼: 텍스트 1~3 / 이미지 6~12 — "Selected Work"/"ALL" 탭과 같은
+   좌측 마진에 맞춤. 배지는 그리드 컬럼과 무관하게 독립 pin(고정 좌표)이라
+   텍스트 컬럼 변경과 관계없이 겹침 걱정 없음(z-index로 항상 위에 뜸).
+   ============================================ */
+.work-list {
+  padding-top: 4vh;
+  padding-bottom: 20vh;
 }
 
-.work-badge.work-badge--sticky:hover .work-badge__char.t-h5,
-.work-badge.work-badge--sticky.is-hovered .work-badge__char.t-h5 {
-  color: #30050E;
+.work-row {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--grid-gutter, 20px);
+  padding: 60px 0;
 }
 
-/* 우측 비주얼 — col 6~12 */
-.work-visual {
-  grid-column: 6 / 13;
+.work-row:not(:last-child) {
+  border-bottom: 1px solid var(--color-white-15);
+}
+
+.work-row__left {
+  grid-column: 1 / span 3;
+}
+
+.work-row__title {
+  margin-bottom: 20px;
+}
+
+.work-row__keywords {
+  list-style: none;
+  margin: 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  gap: clamp(1rem, 2.5vh, 1.25rem);
+  gap: 8px;
+  color: var(--color-white-70);
 }
 
-.work-visual__image {
+.work-row__right {
+  grid-column: 6 / span 7;
+}
+
+.work-row__thumb {
   width: 100%;
   aspect-ratio: 16 / 9;
-  background-color: #F6F3E4;
   overflow: hidden;
+  background-color: var(--color-white);
+  margin-bottom: 20px;
 }
 
-.work-visual__img {
+.work-row__thumb img {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
 }
 
-/* Tags — Pill */
-.work-tags {
+.pill-tags {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem 0.75rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
+  gap: 8px;
+  margin-bottom: 12px;
 }
 
-.work-tags__item {
-  font-family: var(--font-body);
-  font-size: var(--fs-caption);
-  font-weight: 300;
-  letter-spacing: 0.06em;
-  color: var(--color-white-70);
-  padding: 0.35rem 0.85rem;
+.pill-tags .pill {
+  border: 1px solid var(--color-white-30);
   border-radius: 50px;
-  border: 1px solid rgba(246, 243, 228, 0.35);
+  padding: 4px 16px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--color-white);
 }
 
-.work-visual__desc {
-  margin: 0;
-  font-family: var(--font-body);
-  font-size: var(--fs-b3);
-  font-weight: 300;
-  line-height: 1.65;
-  color: var(--color-white-50);
+.work-row__desc {
+  color: var(--color-white-70);
+  line-height: 1.6;
+  max-width: 520px;
 }

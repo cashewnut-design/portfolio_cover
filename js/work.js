@@ -6,67 +6,45 @@ const worksData = [
   {
     category: 'UXUI',
     title: 'Lorem ipsum',
-    keywords: ['keyword', 'keyword', 'keyword'],
-    badgeText: '카테고리 다양 우리 삶을 담아',
+    keywords: ['UX Research', 'Wireframe', 'Prototype'],
     image: 'assets/images/intermission.webp',
-    tags: ['Branding', 'Branding', 'Branding'],
+    tags: ['UX', 'UI', 'Prototype'],
     description:
       'dolor sit amet consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
   },
   {
     category: 'BRAND',
     title: 'Vitae suscipit',
-    keywords: ['editorial', 'identity', 'motion'],
-    badgeText: '살아가기 위해 존재하는 것들',
+    keywords: ['Identity', 'Logotype', 'Guideline'],
     image: 'assets/images/profile.webp',
-    tags: ['Visual', 'Package', 'Web'],
+    tags: ['Branding', 'Visual', 'Package'],
     description:
       'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
   },
   {
     category: 'WEB',
     title: 'Tellus elementum',
-    keywords: ['interface', 'system', 'flow'],
-    badgeText: '피었다 지는 그 사이 아직도',
+    keywords: ['Interface', 'System', 'Flow'],
     image: 'assets/images/kv-images.png',
-    tags: ['UX', 'UI', 'Prototype'],
+    tags: ['Web', 'UI', 'Interaction'],
     description:
       'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
   },
   {
     category: 'EDITORIAL',
     title: 'Sagittis purus',
-    keywords: ['print', 'layout', 'type'],
-    badgeText: '존재의 흔적을 남기다',
+    keywords: ['Print', 'Layout', 'Type'],
     image: 'assets/images/intermission.webp',
     tags: ['Editorial', 'Typography', 'Print'],
     description:
       'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
   },
-  {
-    category: 'MOTION',
-    title: 'Facilisis gravida',
-    keywords: ['animation', 'story', 'rhythm'],
-    badgeText: '애도는 기록이 되고',
-    image: 'assets/images/profile.webp',
-    tags: ['Motion', 'Film', 'Brand'],
-    description:
-      'Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Praesent sapien massa, convallis a pellentesque.',
-  },
 ];
 
-/** 팝업 라벨 ↔ 상단 필터 탭 카테고리 매핑 */
-const POPUP_MENU_ITEMS = [
-  { label: 'UXUI', filter: 'UXUI' },
-  { label: 'LOGO', filter: 'BRAND' },
-  { label: 'POSTER', filter: 'EDITORIAL' },
-  { label: 'CHARACTER', filter: 'MOTION' },
-];
-
-/** 원형 배지 고정 문구 (카테고리명 아님) */
+/* 원형 뱃지 고정 문구 — 카테고리명과 무관, 항상 이 한 문장 */
 const BADGE_RING_TEXT = '우리 삶은 살아가기 위한 과정이다';
-/** 마스터 프롬프트 예시 radius 60 — h5(29px) 링에 맞게 확장 */
-const BADGE_RING_RADIUS = 92;
+const BADGE_RING_RADIUS = 52; // px — 뱃지 크기(140px)에 맞춘 값
+const BADGE_RING_START_ANGLE = -90; // 12시 방향에서 시작
 
 let currentWorkFilter = 'ALL';
 
@@ -83,113 +61,70 @@ function getWorkCategories() {
 }
 
 /**
- * 글자 단위 원 둘레 배치 (마스터 프롬프트 방식)
- * rotate(각도) → translate(반지름) → rotate(90deg), left/top 50%
+ * 원형 텍스트 배치 — 지정 공식 그대로 (순서·값 변경 금지)
+ * 마지막 rotate(90deg)는 반드시 고정값이어야 함.
+ * rotate(-angle)처럼 동적 역회전을 넣으면 글자가 원 중심을 향해
+ * 방사형(sunburst)으로 튀어나오는 버그가 발생하므로 절대 넣지 않는다.
  */
-function createBadgeRingMarkup() {
-  const text = BADGE_RING_TEXT.replace(/\s/g, '');
-  const charCount = text.length;
-  const angleStep = 360 / charCount;
+function mountBadgeRing(container) {
+  if (!container) return;
+  container.innerHTML = '';
 
-  const charNodes = text
-    .split('')
-    .map((char, i) => {
-      const angle = angleStep * i;
-      return `<span class="work-badge__char t-h5" style="transform: rotate(${angle}deg) translate(0, -${BADGE_RING_RADIUS}px) rotate(90deg);">${escapeHtml(char)}</span>`;
-    })
-    .join('');
+  const text = BADGE_RING_TEXT;
+  const chars = text.split('');
+  const radius = BADGE_RING_RADIUS;
+  const n = chars.length;
+  const angleStep = 360 / n;
+  const startAngle = BADGE_RING_START_ANGLE;
 
-  return `
-    <div class="work-badge__ring" aria-hidden="true">
-      <div class="work-badge__circle-container">
-        ${charNodes}
-      </div>
-    </div>
-  `;
-}
+  chars.forEach((char, i) => {
+    const angle = startAngle + (angleStep * i);
 
-/**
- * sticky 배지 — createElement 방식 (프롬프트 스펙과 동일 로직)
- */
-function mountBadgeRing(parentEl) {
-  if (!parentEl) return;
+    const span = document.createElement('span');
+    span.className = 'work-badge__char';
+    span.textContent = char === ' ' ? ' ' : char;
+    span.style.position = 'absolute';
+    span.style.left = '50%';
+    span.style.top = '50%';
+    span.style.transformOrigin = '0 0';
+    span.style.transform = `
+      rotate(${angle}deg)
+      translate(0, -${radius}px)
+      rotate(90deg)
+    `;
 
-  const text = BADGE_RING_TEXT.replace(/\s/g, '');
-  const charCount = text.length;
-  const angleStep = 360 / charCount;
-
-  const ring = document.createElement('div');
-  ring.className = 'work-badge__ring';
-  ring.setAttribute('aria-hidden', 'true');
-
-  const circleContainer = document.createElement('div');
-  circleContainer.className = 'work-badge__circle-container';
-
-  text.split('').forEach((char, i) => {
-    const angle = angleStep * i;
-    const el = document.createElement('span');
-    el.className = 'work-badge__char t-h5';
-    el.textContent = char;
-    el.style.transform = `rotate(${angle}deg) translate(0, -${BADGE_RING_RADIUS}px) rotate(90deg)`;
-    circleContainer.appendChild(el);
+    container.appendChild(span);
   });
-
-  ring.appendChild(circleContainer);
-  parentEl.appendChild(ring);
 }
 
 function createWorkItem(work, index) {
   const keywords = work.keywords
-    .map((kw) => `<li class="work-info__keyword">${escapeHtml(kw)}</li>`)
+    .map((kw) => `<li class="t-b3">${escapeHtml(kw)}</li>`)
     .join('');
   const tags = work.tags
-    .map((tag) => `<li class="work-tags__item">${escapeHtml(tag)}</li>`)
+    .map((tag) => `<span class="pill">${escapeHtml(tag)}</span>`)
     .join('');
 
   return `
-    <article class="work-item" data-work-index="${index}" data-category="${escapeHtml(work.category)}">
-      <div class="work-info">
-        <h3 class="work-info__title">${escapeHtml(work.title)}</h3>
-        <ul class="work-info__keywords">${keywords}</ul>
+    <article class="work-row" data-work-index="${index}" data-category="${escapeHtml(work.category)}">
+      <div class="work-row__left">
+        <h3 class="work-row__title t-h4">${escapeHtml(work.title)}</h3>
+        <ul class="work-row__keywords">${keywords}</ul>
       </div>
-      <div class="work-badge-wrap">
-        <div class="work-badge" aria-hidden="true">
-          ${createBadgeRingMarkup()}
-        </div>
-      </div>
-      <div class="work-visual">
-        <div class="work-visual__image">
+      <div class="work-row__right">
+        <div class="work-row__thumb">
           <img
-            class="work-visual__img"
             src="${escapeHtml(work.image)}"
             alt="${escapeHtml(work.title)}"
-            width="960"
-            height="540"
             loading="lazy"
             decoding="async"
           />
         </div>
-        <ul class="work-tags">${tags}</ul>
-        <p class="work-visual__desc">${escapeHtml(work.description)}</p>
+        <div class="pill-tags">${tags}</div>
+        <p class="work-row__desc t-b3">${escapeHtml(work.description)}</p>
       </div>
     </article>
   `;
-}
-
-function renderWorkFilters() {
-  if (typeof jQuery === 'undefined') return;
-
-  const $filters = jQuery('#work-filters');
-  if (!$filters.length) return;
-
-  const buttons = getWorkCategories()
-    .map((category) => {
-      const isActive = category === currentWorkFilter ? ' is-active' : '';
-      return `<button type="button" class="work-filter t-h5${isActive}" data-filter="${escapeHtml(category)}">${escapeHtml(category)}</button>`;
-    })
-    .join('');
-
-  $filters.html(buttons);
 }
 
 function renderWorkItems() {
@@ -199,60 +134,70 @@ function renderWorkItems() {
   list.innerHTML = worksData.map(createWorkItem).join('');
 }
 
+function renderWorkFilters() {
+  const filters = document.getElementById('work-filters');
+  if (!filters) return;
+
+  const buttons = getWorkCategories()
+    .map((category) => {
+      const isActive = category === currentWorkFilter ? ' is-active' : '';
+      return `<button type="button" class="work-filter t-h5${isActive}" data-filter="${escapeHtml(category)}">${escapeHtml(category)}</button>`;
+    })
+    .join('');
+
+  filters.innerHTML = buttons;
+}
+
 function renderStickyBadge() {
   const container = document.getElementById('work-sticky-badge');
   if (!container) return;
 
-  const popupItems = POPUP_MENU_ITEMS.map(
-    (item) =>
-      `<li class="work-badge-popup__row">
+  const popupItems = getWorkCategories()
+    .map((category) => {
+      const isActive = category === currentWorkFilter ? ' is-active' : '';
+      return `<li class="work-badge-popup__row">
         <button
           type="button"
-          class="work-badge-popup__item t-h5"
+          class="work-badge-popup__item t-h5${isActive}"
           role="menuitem"
-          data-filter="${escapeHtml(item.filter)}"
-        >${escapeHtml(item.label)}</button>
-      </li>`
-  ).join('');
+          data-filter="${escapeHtml(category)}"
+        >${escapeHtml(category)}</button>
+      </li>`;
+    })
+    .join('');
 
   container.innerHTML = `
-    <div class="work-sticky-badge__trigger-wrap">
-      <button
-        type="button"
-        class="work-badge work-badge--sticky"
-        id="work-badge-trigger"
-        aria-expanded="false"
-        aria-haspopup="true"
-        aria-controls="work-badge-popup"
-      ></button>
-      <nav class="work-badge-popup" id="work-badge-popup" role="menu" aria-label="Work category menu" aria-hidden="true">
-        <ul class="work-badge-popup__list">
-          ${popupItems}
-        </ul>
-      </nav>
-    </div>
+    <button
+      type="button"
+      class="circular-badge"
+      id="work-badge-trigger"
+      aria-expanded="false"
+      aria-haspopup="true"
+      aria-controls="work-badge-popup"
+    >
+      <div class="work-badge__ring" id="badgeTextRing" aria-hidden="true"></div>
+    </button>
+    <nav class="work-badge-popup" id="work-badge-popup" role="menu" aria-label="Work category menu" aria-hidden="true">
+      <ul class="work-badge-popup__list">
+        ${popupItems}
+      </ul>
+    </nav>
   `;
 
-  const trigger = document.getElementById('work-badge-trigger');
-  if (trigger) mountBadgeRing(trigger);
+  mountBadgeRing(document.getElementById('badgeTextRing'));
 }
 
-/** 상단 탭 · 원형 배지 팝업 공통 필터 함수 */
+/** 상단 필터 탭 · 원형 배지 팝업 — 동일 카테고리 데이터 공유 */
 function setWorkFilter(category) {
-  if (typeof jQuery === 'undefined') return;
+  currentWorkFilter = String(category || 'ALL');
 
-  const filter = String(category || 'ALL');
-  currentWorkFilter = filter;
+  document.querySelectorAll('.work-filter').forEach((btn) => {
+    btn.classList.toggle('is-active', btn.dataset.filter === currentWorkFilter);
+  });
 
-  const $filters = jQuery('#work-filters');
-  $filters.find('.work-filter').removeClass('is-active');
-  $filters.find(`.work-filter[data-filter="${filter}"]`).addClass('is-active');
-
-  jQuery('.work-item').each(function () {
-    const $item = jQuery(this);
-    const itemCategory = $item.data('category');
-    const show = filter === 'ALL' || itemCategory === filter;
-    $item.toggle(show);
+  document.querySelectorAll('.work-row').forEach((item) => {
+    const show = currentWorkFilter === 'ALL' || item.dataset.category === currentWorkFilter;
+    item.style.display = show ? '' : 'none';
   });
 
   syncPopupActiveState();
@@ -262,126 +207,141 @@ function setWorkFilter(category) {
 }
 
 function syncPopupActiveState() {
-  if (typeof jQuery === 'undefined') return;
-
-  jQuery('.work-badge-popup__item').each(function () {
-    const $item = jQuery(this);
-    $item.toggleClass('is-active', $item.data('filter') === currentWorkFilter);
+  document.querySelectorAll('.work-badge-popup__item').forEach((item) => {
+    item.classList.toggle('is-active', item.dataset.filter === currentWorkFilter);
   });
 }
 
-let workStickyScrollTrigger = null;
+function initWorkFilters() {
+  const filters = document.getElementById('work-filters');
+  if (!filters) return;
 
-function initWorkStickyBadge() {
-  const section = document.querySelector('#work');
-  const sticky = document.getElementById('work-sticky-badge');
-  const scroller = document.querySelector('[data-scroll-container]');
-
-  if (!section || !sticky) return;
-
-  const setVisible = (visible) => {
-    sticky.classList.toggle('is-visible', visible);
-  };
-
-  if (typeof ScrollTrigger !== 'undefined' && scroller) {
-    if (workStickyScrollTrigger) {
-      workStickyScrollTrigger.kill();
-      workStickyScrollTrigger = null;
-    }
-
-    workStickyScrollTrigger = ScrollTrigger.create({
-      trigger: section,
-      scroller,
-      start: 'top 85%',
-      end: 'bottom 15%',
-      onEnter: () => setVisible(true),
-      onEnterBack: () => setVisible(true),
-      onLeave: () => setVisible(false),
-      onLeaveBack: () => setVisible(false),
-    });
-    return;
-  }
-
-  const observer = new IntersectionObserver(
-    ([entry]) => setVisible(entry.isIntersecting),
-    { threshold: 0.05, rootMargin: '-10% 0px -10% 0px' }
-  );
-  observer.observe(section);
+  filters.addEventListener('click', (event) => {
+    const btn = event.target.closest('.work-filter');
+    if (!btn) return;
+    setWorkFilter(btn.dataset.filter);
+  });
 }
 
 function initWorkBadgePopup() {
-  if (typeof jQuery === 'undefined') return;
+  const wrap = document.getElementById('work-sticky-badge');
+  const trigger = document.getElementById('work-badge-trigger');
+  const popup = document.getElementById('work-badge-popup');
 
-  const $sticky = jQuery('#work-sticky-badge');
-  const $trigger = jQuery('#work-badge-trigger');
-  const $popup = jQuery('#work-badge-popup');
-
-  if (!$sticky.length || !$trigger.length || !$popup.length) return;
+  if (!wrap || !trigger || !popup) return;
 
   const openPopup = () => {
-    $sticky.addClass('is-open');
-    $trigger.attr('aria-expanded', 'true');
-    $popup.attr('aria-hidden', 'false');
+    wrap.classList.add('is-open');
+    trigger.setAttribute('aria-expanded', 'true');
+    popup.setAttribute('aria-hidden', 'false');
     syncPopupActiveState();
   };
 
   const closePopup = () => {
-    if (!$sticky.hasClass('is-open')) return;
-
-    $sticky.removeClass('is-open');
-    $trigger.attr('aria-expanded', 'false');
-    $popup.attr('aria-hidden', 'true');
+    if (!wrap.classList.contains('is-open')) return;
+    wrap.classList.remove('is-open');
+    trigger.setAttribute('aria-expanded', 'false');
+    popup.setAttribute('aria-hidden', 'true');
   };
 
-  $trigger.on('click', (event) => {
+  trigger.addEventListener('click', (event) => {
     event.stopPropagation();
-    if ($sticky.hasClass('is-open')) {
+    if (wrap.classList.contains('is-open')) {
       closePopup();
     } else {
       openPopup();
     }
   });
 
-  $popup.on('click', '.work-badge-popup__item', function (event) {
+  popup.addEventListener('click', (event) => {
+    const item = event.target.closest('.work-badge-popup__item');
+    if (!item) return;
     event.stopPropagation();
-    setWorkFilter(jQuery(this).data('filter'));
+    setWorkFilter(item.dataset.filter);
     closePopup();
   });
 
-  jQuery(document).on('click.workBadgePopup', (event) => {
-    if (!jQuery(event.target).closest('#work-sticky-badge').length) {
-      closePopup();
-    }
+  document.addEventListener('click', (event) => {
+    if (!wrap.contains(event.target)) closePopup();
   });
 
-  jQuery(document).on('keydown.workBadgePopup', (event) => {
+  document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') closePopup();
   });
 }
 
-function initWorkFilters() {
-  if (typeof jQuery === 'undefined') return;
+function initWorkBadgeHover() {
+  const trigger = document.getElementById('work-badge-trigger');
+  if (!trigger) return;
 
-  const $filters = jQuery('#work-filters');
-  if (!$filters.length) return;
+  trigger.addEventListener('mouseenter', () => trigger.classList.add('is-hovered'));
+  trigger.addEventListener('mouseleave', () => trigger.classList.remove('is-hovered'));
+}
 
-  $filters.on('click', '.work-filter', function () {
-    setWorkFilter(jQuery(this).data('filter'));
+let badgeRotationTween = null;
+
+/** 스크롤에 따라 뱃지 링을 천천히 회전 (글자 배치 공식 자체는 건드리지 않음) */
+function initBadgeRotation() {
+  const ring = document.getElementById('badgeTextRing');
+  const section = document.querySelector('#work');
+  const scroller = document.querySelector('[data-scroll-container]');
+
+  if (!ring || !section) return;
+  if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+
+  if (badgeRotationTween) {
+    if (badgeRotationTween.scrollTrigger) badgeRotationTween.scrollTrigger.kill();
+    badgeRotationTween.kill();
+    badgeRotationTween = null;
+  }
+
+  gsap.set(ring, { rotation: 0, transformOrigin: '50% 50%' });
+
+  badgeRotationTween = gsap.to(ring, {
+    rotation: 360,
+    ease: 'none',
+    scrollTrigger: {
+      trigger: section,
+      scroller: scroller || undefined,
+      start: 'top bottom',
+      end: 'bottom top',
+      scrub: 0.6,
+    },
   });
 }
 
-function initWorkBadgeInteraction() {
-  if (typeof jQuery === 'undefined') return;
+let workBadgePinTrigger = null;
 
-  const $trigger = jQuery('#work-badge-trigger');
-  if (!$trigger.length) return;
+/**
+ * 배지를 리스트 구간 동안 화면에 고정 — GSAP ScrollTrigger의 pin 기능 사용.
+ * Locomotive Scroll(smooth/transform 모드)과 함께 쓸 때 scroll.js의
+ * scrollerProxy + pinType:'transform' 설정을 그대로 활용한다.
+ * start 기준은 wrapper 전체가 아니라 첫 번째 .work-row — wrapper 상단과
+ * 첫 항목 사이 여백만큼 고정 시점이 일찍 시작되는 것을 방지한다.
+ * end 기준은 리스트 전체(.work-body)를 유지해, 마지막 항목까지 고정된다.
+ */
+function initWorkBadgePin() {
+  const wrapper = document.querySelector('.work-body');
+  const firstRow = document.querySelector('.work-row');
+  const badge = document.getElementById('work-sticky-badge');
+  const scroller = document.querySelector('[data-scroll-container]');
 
-  $trigger.on('mouseenter focusin', () => {
-    $trigger.addClass('is-hovered');
-  });
+  if (!wrapper || !firstRow || !badge) return;
+  if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
 
-  $trigger.on('mouseleave focusout', () => {
-    $trigger.removeClass('is-hovered');
+  if (workBadgePinTrigger) {
+    workBadgePinTrigger.kill();
+    workBadgePinTrigger = null;
+  }
+
+  workBadgePinTrigger = ScrollTrigger.create({
+    trigger: firstRow,
+    scroller: scroller || undefined,
+    start: 'top center',
+    endTrigger: wrapper,
+    end: 'bottom center',
+    pin: badge,
+    pinSpacing: false,
   });
 }
 
@@ -391,27 +351,18 @@ function initWorkSection() {
   renderStickyBadge();
   initWorkFilters();
   initWorkBadgePopup();
-  initWorkBadgeInteraction();
+  initWorkBadgeHover();
+  initBadgeRotation();
+  initWorkBadgePin();
 
-  if (window.locoScroll) {
-    window.locoScroll.update();
-  }
-  if (typeof ScrollTrigger !== 'undefined') {
-    ScrollTrigger.refresh();
-  }
-
-  if (!window.locoScroll) {
-    initWorkStickyBadge();
-  }
+  if (window.locoScroll) window.locoScroll.update();
+  if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
 }
 
 window.addEventListener('loco:ready', () => {
-  initWorkStickyBadge();
+  initBadgeRotation();
+  initWorkBadgePin();
 
-  if (window.locoScroll) {
-    window.locoScroll.update();
-  }
-  if (typeof ScrollTrigger !== 'undefined') {
-    ScrollTrigger.refresh();
-  }
+  if (window.locoScroll) window.locoScroll.update();
+  if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
 });
