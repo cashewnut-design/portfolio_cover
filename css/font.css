@@ -17,3 +17,9 @@
     url('https://cdn.jsdelivr.net/gh/fonts-archive/NanumSonPyeonJiCe/NanumSonPyeonJiCe.woff2') format('woff2'),
     url('https://cdn.jsdelivr.net/gh/fonts-archive/NanumSonPyeonJiCe/NanumSonPyeonJiCe.woff') format('woff');
 }
+
+/* JA 모드 전용 폴백 — Paperlogy/Hahmlet/NanumSonPyeonJiCe는 가나 글리프 미지원 */
+body.lang-ja {
+  --font-body: 'Paperlogy', 'Noto Serif JP', sans-serif;
+  --font-script: 'Noto Serif JP', serif;
+}

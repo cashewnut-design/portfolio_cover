@@ -11,6 +11,17 @@ const worksData = [
     tags: ['UX', 'UI', 'Prototype'],
     description:
       'dolor sit amet consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    /* 상세보기(오버레이) 전용 필드 — 실제 프로젝트 데이터로 교체 예정 */
+    definition: '"Lorem ipsum dolor sit amet"',
+    essence: 'Lorem Ipsum',
+    concept: 'Dolor sit amet',
+    colors: ['#e1e2e4', '#3d4e2c', '#33487f'],
+    typography: 'Pretendard Variable',
+    applicationImages: [
+      'assets/images/intermission.webp',
+      'assets/images/profile.webp',
+      'assets/images/kv-images.png',
+    ],
   },
   {
     category: 'BRAND',
@@ -20,6 +31,16 @@ const worksData = [
     tags: ['Branding', 'Visual', 'Package'],
     description:
       'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+    definition: '"Ut enim ad minim veniam"',
+    essence: 'Traditional',
+    concept: 'Space of intellectual',
+    colors: ['#4ab969', '#006eb7'],
+    typography: 'Pretendard Variable',
+    applicationImages: [
+      'assets/images/profile.webp',
+      'assets/images/intermission.webp',
+      'assets/images/kv-images.png',
+    ],
   },
   {
     category: 'WEB',
@@ -29,6 +50,16 @@ const worksData = [
     tags: ['Web', 'UI', 'Interaction'],
     description:
       'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+    definition: '"Duis aute irure dolor"',
+    essence: 'Powerful',
+    concept: 'Strength',
+    colors: ['#414042'],
+    typography: 'Sports World',
+    applicationImages: [
+      'assets/images/kv-images.png',
+      'assets/images/profile.webp',
+      'assets/images/intermission.webp',
+    ],
   },
   {
     category: 'EDITORIAL',
@@ -38,11 +69,27 @@ const worksData = [
     tags: ['Editorial', 'Typography', 'Print'],
     description:
       'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+    definition: '"Excepteur sint occaecat"',
+    essence: 'Arts',
+    concept: 'Arts',
+    colors: ['#e99424', '#3e3a3a'],
+    typography: 'Pretendard Variable',
+    applicationImages: [
+      'assets/images/intermission.webp',
+      'assets/images/kv-images.png',
+      'assets/images/profile.webp',
+    ],
   },
 ];
 
-/* 원형 뱃지 고정 문구 — 카테고리명과 무관, 항상 이 한 문장 */
-const BADGE_RING_TEXT = '우리 삶은 살아가기 위한 과정이다';
+/* 원형 뱃지 고정 문구 — 카테고리명과 무관, 항상 이 한 문장 (언어별 i18n.js 딕셔너리 참조) */
+function getBadgeRingText() {
+  const lang = localStorage.getItem('site-lang') || 'ko';
+  if (typeof I18N_DICT !== 'undefined' && I18N_DICT['work.badgering'] && I18N_DICT['work.badgering'][lang]) {
+    return I18N_DICT['work.badgering'][lang];
+  }
+  return '우리 삶은 살아가기 위한 과정이다';
+}
 const BADGE_RING_RADIUS = 52; // px — 뱃지 크기(140px)에 맞춘 값
 const BADGE_RING_START_ANGLE = -90; // 12시 방향에서 시작
 
@@ -70,7 +117,7 @@ function mountBadgeRing(container) {
   if (!container) return;
   container.innerHTML = '';
 
-  const text = BADGE_RING_TEXT;
+  const text = getBadgeRingText();
   const chars = text.split('');
   const radius = BADGE_RING_RADIUS;
   const n = chars.length;
@@ -106,7 +153,7 @@ function createWorkItem(work, index) {
     .join('');
 
   return `
-    <article class="work-row" data-work-index="${index}" data-category="${escapeHtml(work.category)}">
+    <article class="work-row" data-work-index="${index}" data-category="${escapeHtml(work.category)}" tabindex="0" role="button" aria-label="${escapeHtml(work.title)} 상세보기">
       <div class="work-row__left">
         <h3 class="work-row__title t-h4">${escapeHtml(work.title)}</h3>
         <ul class="work-row__keywords">${keywords}</ul>
@@ -220,6 +267,88 @@ function initWorkFilters() {
     const btn = event.target.closest('.work-filter');
     if (!btn) return;
     setWorkFilter(btn.dataset.filter);
+  });
+}
+
+/* ============================================
+   Work 상세보기 — 전체화면 오버레이
+   (.nav-modal과 동일한 is-active / aria-hidden 토글 패턴)
+   ============================================ */
+function fillWorkDetail(work) {
+  const modal = document.getElementById('work-detail-modal');
+  if (!modal) return;
+
+  modal.querySelector('[data-detail-category]').textContent = work.category;
+  modal.querySelector('[data-detail-title]').textContent = work.title;
+  modal.querySelector('[data-detail-definition]').textContent = work.definition || '';
+  modal.querySelector('[data-detail-essence]').textContent = work.essence || '';
+  modal.querySelector('[data-detail-concept]').textContent = work.concept || '';
+  modal.querySelector('[data-detail-typography]').textContent = work.typography || '';
+  modal.querySelector('[data-detail-description]').textContent = work.description || '';
+
+  const swatchWrap = modal.querySelector('[data-detail-colors]');
+  swatchWrap.innerHTML = (work.colors || [])
+    .map((hex) => `<span class="work-detail__swatch" style="background:${escapeHtml(hex)}" title="${escapeHtml(hex)}"></span>`)
+    .join('');
+
+  const keywordsWrap = modal.querySelector('[data-detail-keywords]');
+  keywordsWrap.innerHTML = (work.keywords || [])
+    .map((kw) => `<span class="pill">${escapeHtml(kw)}</span>`)
+    .join('');
+
+  const galleryWrap = modal.querySelector('[data-detail-gallery]');
+  galleryWrap.innerHTML = (work.applicationImages || [])
+    .map((src) => `<img src="${escapeHtml(src)}" alt="${escapeHtml(work.title)} application" loading="lazy" decoding="async" />`)
+    .join('');
+}
+
+function openWorkDetail(index) {
+  const work = worksData[index];
+  const modal = document.getElementById('work-detail-modal');
+  if (!work || !modal) return;
+
+  fillWorkDetail(work);
+  modal.classList.add('is-active');
+  modal.setAttribute('aria-hidden', 'false');
+
+  if (window.locoScroll) window.locoScroll.stop();
+}
+
+function closeWorkDetail() {
+  const modal = document.getElementById('work-detail-modal');
+  if (!modal) return;
+
+  modal.classList.remove('is-active');
+  modal.setAttribute('aria-hidden', 'true');
+
+  if (window.locoScroll) window.locoScroll.start();
+}
+
+function initWorkDetailModal() {
+  const list = document.getElementById('work-list');
+  const modal = document.getElementById('work-detail-modal');
+  if (!list || !modal) return;
+
+  list.addEventListener('click', (event) => {
+    const row = event.target.closest('.work-row');
+    if (!row) return;
+    openWorkDetail(Number(row.dataset.workIndex));
+  });
+
+  list.addEventListener('keydown', (event) => {
+    if (event.key !== 'Enter' && event.key !== ' ') return;
+    const row = event.target.closest('.work-row');
+    if (!row) return;
+    event.preventDefault();
+    openWorkDetail(Number(row.dataset.workIndex));
+  });
+
+  modal.querySelectorAll('[data-detail-close]').forEach((btn) => {
+    btn.addEventListener('click', closeWorkDetail);
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && modal.classList.contains('is-active')) closeWorkDetail();
   });
 }
 
@@ -354,6 +483,7 @@ function initWorkSection() {
   initWorkBadgeHover();
   initBadgeRotation();
   initWorkBadgePin();
+  initWorkDetailModal();
 
   if (window.locoScroll) window.locoScroll.update();
   if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
@@ -365,4 +495,10 @@ window.addEventListener('loco:ready', () => {
 
   if (window.locoScroll) window.locoScroll.update();
   if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+});
+
+/* 언어 전환 시 원형 배지 텍스트 다시 그리기 — 회전 공식은 mountBadgeRing 내부 그대로 재사용 */
+window.addEventListener('lang:changed', () => {
+  const ring = document.getElementById('badgeTextRing');
+  if (ring) mountBadgeRing(ring);
 });

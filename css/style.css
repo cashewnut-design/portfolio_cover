@@ -372,6 +372,47 @@
   .site-gnb .gnb__nav {
     pointer-events: auto;
   }
+
+  /* ============================================
+     4-2. 언어 토글 (KO / EN / JA)
+     ============================================ */
+  .lang-switch {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: 8px;
+    font-family: var(--font-kanji), var(--font-display);
+    font-size: 13px;
+  }
+
+  .lang-switch__btn {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    color: var(--color-white-45);
+    font: inherit;
+    transition: color 0.3s ease;
+  }
+
+  .lang-switch__btn:hover,
+  .lang-switch__btn.is-active {
+    color: var(--color-white);
+  }
+
+  .lang-switch__dot {
+    color: var(--color-white-45);
+  }
+
+  /* 풀스크린 nav-modal 안에서는 우측 하단 고정 — 좌하단 닫기 버튼과 대칭 */
+  .lang-switch--modal {
+    position: absolute;
+    right: var(--padding-x);
+    bottom: clamp(24px, 5dvh, 40px);
+    margin: 0;
+    font-size: 15px;
+  }
   
   
   /* ============================================
@@ -548,6 +589,13 @@
   paint-order: stroke fill;
   filter: blur(1px);
   text-shadow: 0 0 6px color-mix(in srgb, var(--color-black) 20%, transparent);
+}
+
+/* JA 모드 — Noto Serif JP는 NanumSonPyeonJiCe보다 글리프가 훨씬 꽉 차 보이므로
+   웨이트를 가볍게, 크기를 살짝 줄여 손글씨체와 비슷한 인상으로 보정 */
+body.lang-ja .t-intermission {
+  font-weight: 300;
+  font-size: calc(var(--fs-intermission) * 0.6);
 }
 
 

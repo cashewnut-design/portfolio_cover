@@ -12,7 +12,7 @@
   <link rel="preload" as="image" href="assets/images/kv-images.png" fetchpriority="high" />
   <link
     rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@200;400;500&family=Zen+Old+Mincho:wght@400;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@200;400;500&family=Zen+Old+Mincho:wght@400;600;700&family=Noto+Serif+JP:wght@300;400;500&display=swap"
   />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
@@ -24,6 +24,7 @@
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/sections/nav-modal.css" />
   <link rel="stylesheet" href="css/sections/work.css" />
+  <link rel="stylesheet" href="css/sections/work-detail.css" />
 
   <!-- Locomotive Scroll v4 -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css" />
@@ -81,6 +82,13 @@
       <span class="nav-muted t-muted45">as</span>
       <span class="nav-muted t-muted45">still</span>
       <span class="nav-muted t-muted45">here.</span>
+      <div class="lang-switch" data-lang-switch aria-label="언어 선택">
+        <button type="button" class="lang-switch__btn" data-lang-btn="ko">KO</button>
+        <span class="lang-switch__dot" aria-hidden="true">·</span>
+        <button type="button" class="lang-switch__btn" data-lang-btn="en">EN</button>
+        <span class="lang-switch__dot" aria-hidden="true">·</span>
+        <button type="button" class="lang-switch__btn" data-lang-btn="ja">JA</button>
+      </div>
     </nav>
   </header>
 
@@ -148,7 +156,7 @@
     <!-- =============== INTERMISSION =============== -->
     <section class="section intermission" data-scroll-section>
       <div class="intermission__inner">
-        <p class="t-intermission">"피었다 지는 그 사이, 아직도."</p>
+        <p class="t-intermission" data-i18n="intermission.quote">"피었다 지는 그 사이, 아직도."</p>
       </div>
     </section>
 
@@ -156,8 +164,8 @@
     <section id="about" class="section about" data-scroll-section>
       <div class="container grid-12 about__grid">
         <div class="about__left">
-          <h2 class="t-h2 anim-up">친애하는 당신에게,</h2>
-          <p class="t-b2 anim-fade">
+          <h2 class="t-h2 anim-up" data-i18n="about.headline">친애하는 당신에게,</h2>
+          <p class="t-b2 anim-fade" data-i18n="about.body">
             삶이란 고통 속에서 피어나는 꽃과 같으며 언젠가는 지지만,<br>
             그저 존재하기만 해도 충분하다. 사랑을 담아, 그런 이들을 위한
           </p>
@@ -168,7 +176,7 @@
         <p class="about__kanji t-kanji-1 anim-up">愛悼</p>
 
         <div class="about__sign-wrap anim-fade">
-          <p class="about__sign t-h5 t-muted">
+          <p class="about__sign t-h5 t-muted" data-i18n="about.signature">
             Regardless,<br>Taeyeon
           </p>
         </div>
@@ -191,19 +199,19 @@
               decoding="async"
             />
           </div>
-          <p class="profile__quote profile-anim-typo t-kanji-4">"Look through<br>the remains left behind"</p>
+          <p class="profile__quote profile-anim-typo t-kanji-4" data-i18n="profile.quote">"Look through<br>the remains left behind"</p>
           <div class="profile__kanji-deco">
             <div class="profile__kanji-item profile-anim-typo">
               <span class="profile__kanji-char t-kanji-2">愛</span>
               <div class="profile__kanji-meta">
-                <span class="profile__kanji-en t-kanji-5">Love</span>
+                <span class="profile__kanji-en t-kanji-5" data-i18n="profile.kanji.love">Love</span>
                 <span class="profile__kanji-rom t-caption">愛 · AI</span>
               </div>
             </div>
             <div class="profile__kanji-item profile-anim-typo">
               <span class="profile__kanji-char t-kanji-2">悼</span>
               <div class="profile__kanji-meta">
-                <span class="profile__kanji-en t-kanji-5">Mourning</span>
+                <span class="profile__kanji-en t-kanji-5" data-i18n="profile.kanji.mourning">Mourning</span>
                 <span class="profile__kanji-rom t-caption">悼 · DO</span>
               </div>
             </div>
@@ -213,26 +221,26 @@
         <div class="profile__center">
           <div class="profile__block profile-anim-center">
             <h3 class="profile__label t-kanji-5">PROFILE</h3>
-            <p class="profile__body t-b3">김태연 Multidisciplinary Designer<br>BRANDING · VISUAL · UX/UI BASED IN SEOUL</p>
+            <p class="profile__body t-b3" data-i18n="profile.body.profile">김태연 Multidisciplinary Designer<br>BRANDING · VISUAL · UX/UI BASED IN SEOUL</p>
           </div>
           <div class="profile__block profile-anim-center">
             <h3 class="profile__label t-kanji-5">EDUCATION</h3>
-            <p class="profile__body t-b3">2026 SEO 최적화 디지털 브랜딩 UI/UX 웹서비스 구현 COMPLETED<br>2024 세명대학교 · 시각디자인학과 GRADUATED<br>2018 인명여자고등학교 GRADUATE</p>
+            <p class="profile__body t-b3" data-i18n="profile.body.education">2026 SEO 최적화 디지털 브랜딩 UI/UX 웹서비스 구현 COMPLETED<br>2024 세명대학교 · 시각디자인학과 GRADUATED<br>2018 인명여자고등학교 GRADUATE</p>
           </div>
           <div class="profile__block profile-anim-center">
             <h3 class="profile__label t-kanji-5">AWARDS / SELECTIONS</h3>
-            <p class="profile__body t-b3">2023 Encouragement Award · 전통문양 이모티콘 공모전<br>2023 Selected · Blue Awards (한국상품문화디자인학회)<br>2021 Selected · 국제디자인트렌드대전</p>
+            <p class="profile__body t-b3" data-i18n="profile.body.awards">2023 Encouragement Award · 전통문양 이모티콘 공모전<br>2023 Selected · Blue Awards (한국상품문화디자인학회)<br>2021 Selected · 국제디자인트렌드대전</p>
           </div>
           <div class="profile__block profile-anim-center">
             <h3 class="profile__label t-kanji-5">LANGUAGES</h3>
-            <p class="profile__body t-b3">Korean — Native<br>Japanese — Studying toward JLPT N3<br>English — Working proficiency</p>
+            <p class="profile__body t-b3" data-i18n="profile.body.languages">Korean — Native<br>Japanese — Studying toward JLPT N3<br>English — Working proficiency</p>
           </div>
         </div>
 
         <div class="profile__right">
           <div class="profile__block profile-anim-right">
             <h3 class="profile__label t-kanji-5">CERTIFICATIONS</h3>
-            <p class="profile__body t-b3">GTQ 1급 · GTQi 1급</p>
+            <p class="profile__body t-b3" data-i18n="profile.body.certifications">GTQ 1급 · GTQi 1급</p>
           </div>
           <div class="profile__block profile-anim-right">
             <h3 class="profile__label t-kanji-5">TOOLS</h3>
@@ -244,7 +252,7 @@
           </div>
           <div class="profile__block profile-anim-right">
             <h3 class="profile__label t-kanji-5">OUTPUT</h3>
-            <p class="profile__body t-b3">Branding · Package · Editorial<br>UI/UX · Detail Page · Banner<br>Emoticon · Pattern</p>
+            <p class="profile__body t-b3" data-i18n="profile.body.output">Branding · Package · Editorial<br>UI/UX · Detail Page · Banner<br>Emoticon · Pattern</p>
           </div>
         </div>
 
@@ -255,7 +263,7 @@
             <span class="about-nav__sym about-nav__sym--3">✧</span>
             <span class="about-nav__sym about-nav__sym--4">·</span>
           </div>
-          <p class="about-nav-text t-h5">“삶과 죽음이 닿는 자리에서”</p>
+          <p class="about-nav-text t-h5" data-i18n="profile.navlink">“삶과 죽음이 닿는 자리에서”</p>
           <span class="about-nav__line" aria-hidden="true"></span>
         </a>
       </div>
@@ -270,8 +278,8 @@
           <span class="work-top__title-line">Work</span>
         </h2>
         <div class="work-top__subcopy">
-          <p class="t-h5 work-top__subcopy-line">우리 삶은 살아가기 위한 과정이다</p>
-          <p class="t-b3 work-top__subcopy-line work-top__subcopy-line--sm">우리 삶은 살아가기 위한 과정이다</p>
+          <p class="t-h5 work-top__subcopy-line" data-i18n="work.subcopy">우리 삶은 살아가기 위한 과정이다</p>
+          <p class="t-b3 work-top__subcopy-line work-top__subcopy-line--sm" data-i18n="work.subcopy">우리 삶은 살아가기 위한 과정이다</p>
         </div>
         <div class="work-filter-tabs" id="work-filters"></div>
         <div class="work-filter-divider" aria-hidden="true"></div>
@@ -339,9 +347,53 @@
         </div>
       </nav>
 
+      <div class="lang-switch lang-switch--modal" data-lang-switch aria-label="언어 선택">
+        <button type="button" class="lang-switch__btn" data-lang-btn="ko">KO</button>
+        <span class="lang-switch__dot" aria-hidden="true">·</span>
+        <button type="button" class="lang-switch__btn" data-lang-btn="en">EN</button>
+        <span class="lang-switch__dot" aria-hidden="true">·</span>
+        <button type="button" class="lang-switch__btn" data-lang-btn="ja">JA</button>
+      </div>
+
       <button type="button" class="nav-close-btn" aria-label="메뉴 닫기" data-nav-close>
         <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
       </button>
+
+    </div>
+  </div>
+
+  <!-- =============== WORK 상세보기 오버레이 =============== -->
+  <div class="work-detail-modal" id="work-detail-modal" aria-hidden="true" role="dialog" aria-label="Work detail">
+    <div class="work-detail-modal__inner">
+
+      <button type="button" class="work-detail__close" aria-label="닫기" data-detail-close>
+        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+      </button>
+
+      <p class="work-detail__category t-caption" data-detail-category></p>
+      <h2 class="work-detail__title t-h2" data-detail-title></h2>
+      <p class="work-detail__definition t-h4" data-detail-definition></p>
+
+      <div class="work-detail__meta">
+        <div class="work-detail__meta-item">
+          <h4 class="work-detail__meta-label t-kanji-5">ESSENCE</h4>
+          <p class="t-b3" data-detail-essence></p>
+        </div>
+        <div class="work-detail__meta-item">
+          <h4 class="work-detail__meta-label t-kanji-5">CONCEPT</h4>
+          <p class="t-b3" data-detail-concept></p>
+        </div>
+        <div class="work-detail__meta-item">
+          <h4 class="work-detail__meta-label t-kanji-5">TYPOGRAPHY</h4>
+          <p class="t-b3" data-detail-typography></p>
+        </div>
+      </div>
+
+      <div class="work-detail__colors" data-detail-colors></div>
+      <div class="pill-tags work-detail__keywords" data-detail-keywords></div>
+      <p class="work-detail__description t-b2" data-detail-description></p>
+
+      <div class="work-detail__gallery" data-detail-gallery></div>
 
     </div>
   </div>
@@ -361,6 +413,7 @@
   <script defer src="js/work.js"></script>
   <script defer src="js/scroll.js"></script>
   <script defer src="js/main.js"></script>
+  <script defer src="js/i18n.js"></script>
 </body>
 </html>
 

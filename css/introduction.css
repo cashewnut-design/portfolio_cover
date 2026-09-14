@@ -1,0 +1,172 @@
+/* ============================================
+   愛悼 — Introduction (자기소개서) Page
+   Locomotive/GSAP 없이 일반 스크롤 — 별도 정적 페이지
+   ============================================ */
+
+.intro-body {
+  background-color: var(--color-black);
+  color: var(--color-white);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+}
+
+/* --- Header --- */
+.intro-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: clamp(1.25rem, 4vh, 2rem) var(--padding-x);
+  background-color: var(--color-black);
+  border-bottom: 1px solid var(--color-white-15);
+}
+
+.intro-header__logo {
+  color: var(--color-white);
+  text-decoration: none;
+}
+
+.intro-header__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-white-70);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.intro-header__back:hover {
+  color: var(--color-white);
+}
+
+/* --- Main --- */
+.intro-main {
+  max-width: 760px;
+  margin-inline: auto;
+  padding: clamp(3rem, 10dvh, 6rem) var(--padding-x) clamp(4rem, 12dvh, 7rem);
+}
+
+.intro-hero {
+  margin-bottom: clamp(3rem, 8dvh, 5rem);
+}
+
+.intro-hero__eyebrow {
+  color: var(--color-white-45);
+  letter-spacing: 0.1em;
+  margin: 0 0 0.75rem;
+}
+
+.intro-hero__title {
+  margin: 0 0 1rem;
+}
+
+.intro-hero__sub {
+  margin: 0;
+}
+
+/* --- Profile meta --- */
+.intro-profile {
+  padding: clamp(1.5rem, 4dvh, 2rem) 0;
+  border-top: 1px solid var(--color-white-15);
+  border-bottom: 1px solid var(--color-white-15);
+  margin-bottom: clamp(3rem, 8dvh, 4rem);
+}
+
+.intro-profile__name {
+  margin: 0 0 0.25rem;
+}
+
+.intro-profile__name-en {
+  margin: 0 0 1.25rem;
+  letter-spacing: 0.05em;
+}
+
+.intro-profile__contact {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.intro-profile__contact li span {
+  display: inline-block;
+  min-width: 70px;
+  letter-spacing: 0.05em;
+}
+
+/* --- Info blocks (EDUCATION / CERTIFICATION / AWARDS ...) --- */
+.intro-block {
+  margin-bottom: clamp(2rem, 5dvh, 2.5rem);
+}
+
+.intro-block__label {
+  color: var(--color-white-45);
+  margin: 0 0 0.75rem;
+  letter-spacing: 0.05em;
+}
+
+.intro-block__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: var(--color-white-70);
+}
+
+.intro-block__body {
+  margin: 0;
+  color: var(--color-white-70);
+}
+
+/* --- Self-introduction essay --- */
+.intro-essay {
+  margin-top: clamp(4rem, 10dvh, 6rem);
+  padding-top: clamp(2rem, 5dvh, 3rem);
+  border-top: 1px solid var(--color-white-15);
+}
+
+.intro-essay__eyebrow {
+  color: var(--color-white-45);
+  letter-spacing: 0.1em;
+  margin: 0 0 clamp(2rem, 5dvh, 3rem);
+}
+
+.intro-essay__item {
+  margin-bottom: clamp(2.5rem, 6dvh, 3.5rem);
+}
+
+.intro-essay__title {
+  margin: 0 0 1rem;
+  color: var(--color-white);
+}
+
+.intro-essay__body {
+  margin: 0;
+  color: var(--color-white-70);
+  line-height: 1.8;
+}
+
+/* --- Footer link --- */
+.intro-footer-link {
+  display: inline-block;
+  margin-top: clamp(3rem, 8dvh, 4rem);
+  color: var(--color-white-70);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.intro-footer-link:hover {
+  color: var(--color-white);
+}
+
+@media screen and (max-width: 600px) {
+  .intro-main {
+    padding-inline: var(--padding-x);
+  }
+}

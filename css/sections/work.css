@@ -217,6 +217,13 @@
   grid-template-columns: repeat(12, 1fr);
   gap: var(--grid-gutter, 20px);
   padding: 60px 0;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.work-row:hover,
+.work-row:focus-visible {
+  opacity: 0.85;
 }
 
 .work-row:not(:last-child) {
