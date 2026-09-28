@@ -926,3 +926,48 @@ body.lang-ja .t-intermission {
    Intermission 이하 — style.css 유지
    KV 반응형: css/sections/kv.css (1단계)
    ============================================ */
+
+
+/* ============================================
+   13. Contact Section (#contact)
+   기존 Tailwind CDN 유틸리티를 그대로 대체 — 기존 CSS 변수만 사용
+   ============================================ */
+.contact-section {
+  position: relative;
+  background-color: var(--color-black);
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  padding-inline: var(--padding-x);
+  padding-block: var(--section-gap);
+}
+
+.contact-inner {
+  margin-inline: auto;
+  width: 100%;
+  max-width: var(--grid-max-width);
+}
+
+.contact-email {
+  display: inline-block;
+  margin-top: 24px;
+  transition: opacity 0.5s ease;
+}
+
+.contact-email:hover {
+  opacity: 0.55;
+}
+
+.contact-links {
+  margin-top: clamp(2rem, 6vh, 4rem);
+  display: flex;
+  gap: 2rem;
+}
+
+.contact-link {
+  transition: color 0.5s ease;
+}
+
+.contact-link:hover {
+  color: var(--color-white);
+}

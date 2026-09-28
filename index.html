@@ -28,43 +28,6 @@
 
   <!-- Locomotive Scroll v4 -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css" />
-
-  <!-- Tailwind: below-fold 섹션용 — KV 렌더 차단 최소화 -->
-  <script defer src="https://cdn.tailwindcss.com"></script>
-  <script defer>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            bg:      '#1E100F',
-            kv:      '#74070D',
-            surface: '#30050E',
-            ink:     '#F6F3E4',
-            mute:    'rgba(246, 243, 228, 0.45)',
-          },
-          fontFamily: {
-            display: ['"Hahmlet"', 'serif'],
-            kanji:   ['"Zen Old Mincho"', 'serif'],
-            body:    ['"Paperlogy"', 'sans-serif'],
-          },
-          fontSize: {
-            h1: ['96px', { lineHeight: '1.1' }],
-            h2: ['60px', { lineHeight: '1.1' }],
-            h3: ['48px', { lineHeight: '1.2' }],
-            h4: ['35px', { lineHeight: '1.2' }],
-            h5: ['29px', { lineHeight: '1.2' }],
-          },
-          letterSpacing: { wide: '0.14em' },
-          lineHeight:    { display: '0.92', body: '1.8' },
-          maxWidth:      { content: '1440px' },
-          spacing: {
-            gutter:  'clamp(1.25rem, 5vw, 6rem)',
-            section: 'clamp(6rem, 14vh, 12rem)',
-          },
-        },
-      },
-    };
-  </script>
 </head>
 
 <body class="site-body">
@@ -93,7 +56,7 @@
   </header>
 
   <!-- =================== SCROLL CONTAINER =================== -->
-  <main data-scroll-container class="relative w-full">
+  <main data-scroll-container>
 
     <!-- =============== KV / HERO (1단계) =============== -->
     <section id="kv" class="kv section" data-scroll-section>
@@ -296,21 +259,16 @@
     </section>
 
     <!-- =============== CONTACT =============== -->
-    <section id="contact" data-scroll-section
-             class="relative bg-bg min-h-[70vh] flex items-center px-gutter py-section">
-      <div class="mx-auto w-full max-w-content">
+    <section id="contact" data-scroll-section class="contact-section">
+      <div class="contact-inner">
         <p class="t-caption t-muted40" data-reveal>Contact</p>
-        <a href="mailto:hello@example.com" data-reveal
-           class="t-h1 inline-block mt-6 transition-opacity duration-500 hover:opacity-55">
+        <a href="mailto:hello@example.com" data-reveal class="t-h1 contact-email">
           hello@example.com
         </a>
-        <nav class="mt-[clamp(2rem,6vh,4rem)] flex gap-8" data-reveal>
-          <a href="#" target="_blank" rel="noopener"
-             class="t-caption t-muted40 transition-colors duration-500 hover:text-ink">Instagram</a>
-          <a href="#" target="_blank" rel="noopener"
-             class="t-caption t-muted40 transition-colors duration-500 hover:text-ink">Behance</a>
-          <a href="#" target="_blank" rel="noopener"
-             class="t-caption t-muted40 transition-colors duration-500 hover:text-ink">LinkedIn</a>
+        <nav class="contact-links" data-reveal>
+          <a href="#" target="_blank" rel="noopener" class="t-caption t-muted40 contact-link">Instagram</a>
+          <a href="#" target="_blank" rel="noopener" class="t-caption t-muted40 contact-link">Behance</a>
+          <a href="#" target="_blank" rel="noopener" class="t-caption t-muted40 contact-link">LinkedIn</a>
         </nav>
       </div>
     </section>

@@ -80,6 +80,35 @@ const worksData = [
       'assets/images/profile.webp',
     ],
   },
+  /* 실제 웹 작업물 — link 필드가 있으면 카드 클릭 시 상세보기 오버레이 대신
+     새 탭으로 해당 URL을 연다(아래 createWorkItem / initWorkDetailModal 참고) */
+  {
+    category: 'WEB',
+    title: 'CLINORA',
+    keywords: ['Corporate Site', 'Pharmaceutical', 'Responsive Web'],
+    image: 'assets/images/work-clinora-pharma-thumb.webp',
+    tags: ['Web', 'UI', 'Corporate'],
+    description: '가상 제약회사를 위한 브랜드 소개형 웹사이트.',
+    link: 'https://clinoramedical.netlify.app/',
+  },
+  {
+    category: 'WEB',
+    title: '클리어스마일 치과의원',
+    keywords: ['Clinic Site', 'Local Business', 'Responsive Web'],
+    image: 'assets/images/work-clearsmile-dental-thumb.webp',
+    tags: ['Web', 'UI', 'Healthcare'],
+    description: '치과의원을 위한 반응형 소개 웹사이트.',
+    link: 'https://clearsmiledentalclinic.netlify.app/',
+  },
+  {
+    category: 'WEB',
+    title: '반띵식탁',
+    keywords: ['Food Sharing Service', 'Team Project', 'Responsive Web'],
+    image: 'assets/images/work-halftable-thumb.webp',
+    tags: ['Web', 'UI', 'Service'],
+    description: '음식을 반띵(나눔)해 주문하는 서비스 웹사이트. 팀 프로젝트 · 디자인/기획 담당',
+    link: 'https://half-table.vercel.app/',
+  },
 ];
 
 /* 원형 뱃지 고정 문구 — 카테고리명과 무관, 항상 이 한 문장 (언어별 i18n.js 딕셔너리 참조) */
@@ -152,25 +181,47 @@ function createWorkItem(work, index) {
     .map((tag) => `<span class="pill">${escapeHtml(tag)}</span>`)
     .join('');
 
-  return `
-    <article class="work-row" data-work-index="${index}" data-category="${escapeHtml(work.category)}" tabindex="0" role="button" aria-label="${escapeHtml(work.title)} 상세보기">
-      <div class="work-row__left">
-        <h3 class="work-row__title t-h4">${escapeHtml(work.title)}</h3>
-        <ul class="work-row__keywords">${keywords}</ul>
-      </div>
-      <div class="work-row__right">
-        <div class="work-row__thumb">
+  /* 웹 작업물(link 있음) — 카드 자체를 <a target="_blank">로 렌더링해 새 탭으로
+     이동시킨다. 로고/포스터 등 기존 작업물은 link가 없으므로 그대로 <article>
+     + 상세보기 오버레이(role="button") 방식을 유지한다. */
+  const isExternalLink = Boolean(work.link);
+  const rowTag = isExternalLink ? 'a' : 'article';
+  const rowAttrs = isExternalLink
+    ? `href="${escapeHtml(work.link)}" target="_blank" rel="noopener noreferrer"`
+    : `tabindex="0" role="button" aria-label="${escapeHtml(work.title)} 상세보기"`;
+
+  /* webp 우선 + jpg fallback — 웹 작업물 썸네일만 <picture>로 감싼다 */
+  const thumbMarkup = isExternalLink
+    ? `<picture>
+          <source srcset="${escapeHtml(work.image)}" type="image/webp" />
           <img
             src="${escapeHtml(work.image)}"
             alt="${escapeHtml(work.title)}"
             loading="lazy"
             decoding="async"
           />
+        </picture>`
+    : `<img
+          src="${escapeHtml(work.image)}"
+          alt="${escapeHtml(work.title)}"
+          loading="lazy"
+          decoding="async"
+        />`;
+
+  return `
+    <${rowTag} class="work-row" data-work-index="${index}" data-category="${escapeHtml(work.category)}" ${rowAttrs}>
+      <div class="work-row__left">
+        <h3 class="work-row__title t-h4">${escapeHtml(work.title)}</h3>
+        <ul class="work-row__keywords">${keywords}</ul>
+      </div>
+      <div class="work-row__right">
+        <div class="work-row__thumb">
+          ${thumbMarkup}
         </div>
         <div class="pill-tags">${tags}</div>
         <p class="work-row__desc t-b3">${escapeHtml(work.description)}</p>
       </div>
-    </article>
+    </${rowTag}>
   `;
 }
 
@@ -332,6 +383,9 @@ function initWorkDetailModal() {
   list.addEventListener('click', (event) => {
     const row = event.target.closest('.work-row');
     if (!row) return;
+    /* 웹 작업물 카드는 <a target="_blank">라 네이티브 새 탭 이동에 맡기고
+       상세보기 오버레이는 열지 않는다 */
+    if (row.tagName === 'A') return;
     openWorkDetail(Number(row.dataset.workIndex));
   });
 
@@ -339,6 +393,7 @@ function initWorkDetailModal() {
     if (event.key !== 'Enter' && event.key !== ' ') return;
     const row = event.target.closest('.work-row');
     if (!row) return;
+    if (row.tagName === 'A') return; // <a>는 Enter 시 이미 기본 동작으로 새 탭 이동함
     event.preventDefault();
     openWorkDetail(Number(row.dataset.workIndex));
   });

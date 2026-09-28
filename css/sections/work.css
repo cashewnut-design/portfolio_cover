@@ -260,6 +260,7 @@
   margin-bottom: 20px;
 }
 
+.work-row__thumb picture,
 .work-row__thumb img {
   display: block;
   width: 100%;
